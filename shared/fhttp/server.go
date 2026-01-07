@@ -1,9 +1,9 @@
 package fhttp
 
 import (
-	"base_project/util/config"
-	"base_project/util/logger"
 	"context"
+	"coupon_be/util/config"
+	"coupon_be/util/logger"
 	"errors"
 	"fmt"
 	"net/http"

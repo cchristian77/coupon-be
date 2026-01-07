@@ -1,9 +1,9 @@
 package comment
 
 import (
-	m "base_project/mock"
-	sharedErrs "base_project/shared/errors"
-	"base_project/util/constant"
+	m "coupon_be/mock"
+	sharedErrs "coupon_be/shared/errors"
+	"coupon_be/util/constant"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

@@ -1,10 +1,10 @@
 package comment
 
 import (
-	"base_project/repository"
-	"base_project/request"
-	"base_project/response"
 	"context"
+	"coupon_be/repository"
+	"coupon_be/request"
+	"coupon_be/response"
 
 	"gorm.io/gorm"
 )

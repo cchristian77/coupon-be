@@ -1,12 +1,11 @@
 package comment
 
 import (
-	"base_project/request"
-	"base_project/service/comment"
-	sharedErrs "base_project/shared/errors"
-	fhttp "base_project/shared/fhttp"
-	"base_project/shared/fhttp/middleware"
-	"base_project/util"
+	"coupon_be/request"
+	"coupon_be/service/comment"
+	sharedErrs "coupon_be/shared/errors"
+	"coupon_be/shared/fhttp"
+	"coupon_be/util"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -21,7 +20,6 @@ type Controller struct {
 }
 
 func (c *Controller) RegisterRoutes(r *mux.Router) {
-	r.Use(middleware.Authentication())
 	r.Handle("/{post_id:[0-9]+}/posts", fhttp.AppHandler(c.FilterComments)).Methods(http.MethodGet)
 	r.Handle("/{comment_id:[0-9]+}", fhttp.AppHandler(c.Detail)).Methods(http.MethodGet)
 	r.Handle("", fhttp.AppHandler(c.Store)).Methods(http.MethodPost)

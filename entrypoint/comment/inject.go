@@ -1,10 +1,10 @@
 package comment
 
 import (
-	"base_project/repository"
-	"base_project/service/comment"
-	"base_project/util/logger"
 	"context"
+	"coupon_be/repository"
+	"coupon_be/service/comment"
+	"coupon_be/util/logger"
 	"fmt"
 
 	"gorm.io/gorm"

@@ -1,4 +1,4 @@
-module base_project
+module coupon_be
 
 go 1.24.10
 

@@ -1,8 +1,8 @@
 package comment
 
 import (
-	"base_project/response"
 	"context"
+	"coupon_be/response"
 )
 
 func (b *base) Detail(ctx context.Context, id uint64) (*response.Comment, error) {

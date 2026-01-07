@@ -1,14 +1,13 @@
 package entrypoint
 
 import (
-	"base_project/entrypoint/auth"
-	"base_project/entrypoint/comment"
-	"base_project/entrypoint/post"
-	"base_project/repository"
-	"base_project/shared/external/database"
-	"base_project/shared/fhttp/middleware"
-	"base_project/util/logger"
 	"context"
+	"coupon_be/entrypoint/comment"
+	"coupon_be/entrypoint/user"
+	"coupon_be/repository"
+	"coupon_be/shared/external/database"
+	"coupon_be/shared/fhttp/middleware"
+	"coupon_be/util/logger"
 	"fmt"
 
 	"github.com/gorilla/mux"
@@ -38,12 +37,7 @@ func StartControllers(router *mux.Router) error {
 	repo := repository.NewRepository(gormDB)
 
 	// Initialise all controllers
-	middleware.NewAuthMiddleware(ctx, repo, gormDB)
-	authController, err := auth.NewController(ctx, repo, gormDB)
-	if err != nil {
-		return err
-	}
-	postController, err := post.NewController(ctx, repo, gormDB)
+	userController, err := user.NewController(ctx, repo, gormDB)
 	if err != nil {
 		return err
 	}
@@ -53,8 +47,7 @@ func StartControllers(router *mux.Router) error {
 	}
 
 	// register routes
-	authController.RegisterRoutes(router.PathPrefix("/auth/v1").Subrouter())
-	postController.RegisterRoutes(router.PathPrefix("/posts/v1").Subrouter())
+	userController.RegisterRoutes(router.PathPrefix("/users/v1").Subrouter())
 	commentController.RegisterRoutes(router.PathPrefix("/comments/v1").Subrouter())
 
 	return nil

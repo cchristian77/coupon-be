@@ -1,11 +1,11 @@
 package comment
 
 import (
-	"base_project/request"
-	"base_project/response"
-	sharedErrs "base_project/shared/errors"
-	"base_project/util"
 	"context"
+	"coupon_be/request"
+	"coupon_be/response"
+	sharedErrs "coupon_be/shared/errors"
+	"coupon_be/util"
 	"errors"
 
 	"gorm.io/gorm"

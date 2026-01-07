@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"base_project/util/constant"
-	"base_project/util/logger"
 	"context"
+	"coupon_be/util/constant"
+	"coupon_be/util/logger"
 	"net/http"
 
 	"github.com/google/uuid"

@@ -1,8 +1,8 @@
 package fhttp
 
 import (
-	"base_project/util/constant"
 	"context"
+	"coupon_be/util/constant"
 	"net/http"
 )
 

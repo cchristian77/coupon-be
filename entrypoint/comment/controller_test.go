@@ -1,17 +1,17 @@
 package comment
 
 import (
-	m "base_project/mock"
-	ms "base_project/mock/service"
-	"base_project/request"
-	"base_project/response"
-	sharedErrs "base_project/shared/errors"
-	"base_project/shared/fhttp"
-	"base_project/shared/fhttp/middleware"
-	"base_project/util"
-	"base_project/util/logger"
 	"bytes"
 	"context"
+	m "coupon_be/mock"
+	ms "coupon_be/mock/service"
+	"coupon_be/request"
+	"coupon_be/response"
+	sharedErrs "coupon_be/shared/errors"
+	"coupon_be/shared/fhttp"
+	"coupon_be/shared/fhttp/middleware"
+	"coupon_be/util"
+	"coupon_be/util/logger"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -39,8 +39,6 @@ func (suite *CommentControllerTestSuite) Before(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	db, _, _ := m.NewMockDB()
-
 	suite.router = mux.NewRouter()
 	suite.router.Use(middleware.PanicRecovery())
 	suite.commentService = ms.NewMockCommentService(ctrl)
@@ -48,7 +46,6 @@ func (suite *CommentControllerTestSuite) Before(t *testing.T) {
 	suite.controller = &Controller{
 		comment: suite.commentService,
 	}
-	middleware.NewAuthMiddleware(suite.ctx, suite.repo, db)
 
 	suite.controller.RegisterRoutes(suite.router.PathPrefix(suite.prefix).Subrouter())
 }
@@ -59,15 +56,6 @@ func (suite *CommentControllerTestSuite) Test_FilterComments() {
 		Page:    1,
 		PerPage: 10,
 		Search:  "search",
-	}
-	accessToken, session := m.MockAccessToken()
-	mockAuthFuncCall := func() {
-		suite.repo.EXPECT().FindSessionBySessionID(gomock.Any(), gomock.Any()).
-			Return(session, nil).
-			Times(1)
-		suite.repo.EXPECT().FindUserByID(gomock.Any(), gomock.Eq(session.UserID)).
-			Return(m.InitUserDomain(), nil).
-			Times(1)
 	}
 
 	var comments []*response.Comment
@@ -93,9 +81,6 @@ func (suite *CommentControllerTestSuite) Test_FilterComments() {
 			name:       "success",
 			httpMethod: http.MethodGet,
 			input:      filterCommentReq,
-			requestHeaders: struct{ authorization string }{
-				authorization: accessToken,
-			},
 			prepareMock: func(t *testing.T) {
 				p := &util.Pagination{}
 				p.SetPage(filterCommentReq.Page)
@@ -103,7 +88,6 @@ func (suite *CommentControllerTestSuite) Test_FilterComments() {
 
 				paginatedComments := response.NewBasePagination(comments, p)
 
-				mockAuthFuncCall()
 				suite.commentService.EXPECT().
 					FilterComments(gomock.Any(), gomock.Any()).
 					Return(paginatedComments, nil).
@@ -129,12 +113,7 @@ func (suite *CommentControllerTestSuite) Test_FilterComments() {
 			name:       "unexpected error",
 			httpMethod: http.MethodGet,
 			input:      filterCommentReq,
-			requestHeaders: struct{ authorization string }{
-				authorization: accessToken,
-			},
 			prepareMock: func(t *testing.T) {
-				mockAuthFuncCall()
-
 				suite.commentService.EXPECT().
 					FilterComments(gomock.Any(), gomock.Any()).
 					Return(nil, sharedErrs.InternalServerErr).
@@ -190,15 +169,6 @@ func (suite *CommentControllerTestSuite) Test_FilterComments() {
 func (suite *CommentControllerTestSuite) Test_Detail() {
 	commentID := uint64(1)
 	commentResponse := m.InitCommentResponse()
-	accessToken, session := m.MockAccessToken()
-	mockAuthFuncCall := func() {
-		suite.repo.EXPECT().FindSessionBySessionID(gomock.Any(), gomock.Any()).
-			Return(session, nil).
-			Times(1)
-		suite.repo.EXPECT().FindUserByID(gomock.Any(), gomock.Eq(session.UserID)).
-			Return(m.InitUserDomain(), nil).
-			Times(1)
-	}
 
 	var expectedResult *response.Comment
 
@@ -220,13 +190,8 @@ func (suite *CommentControllerTestSuite) Test_Detail() {
 			name:       "success",
 			httpMethod: http.MethodGet,
 			input:      struct{ commentID any }{commentID: commentID},
-			requestHeaders: struct{ authorization string }{
-				authorization: accessToken,
-			},
 			prepareMock: func(t *testing.T) {
 				expectedResult = commentResponse
-				mockAuthFuncCall()
-
 				suite.commentService.EXPECT().
 					Detail(gomock.Any(), gomock.Eq(commentID)).
 					Return(commentResponse, nil).
@@ -238,9 +203,6 @@ func (suite *CommentControllerTestSuite) Test_Detail() {
 			name:       "invalid comment id",
 			httpMethod: http.MethodGet,
 			input:      struct{ commentID any }{commentID: "invalid"},
-			requestHeaders: struct{ authorization string }{
-				authorization: accessToken,
-			},
 			prepareMock: func(t *testing.T) {
 				suite.commentService.EXPECT().
 					Detail(gomock.Any(), gomock.Eq(commentID)).
@@ -280,13 +242,8 @@ func (suite *CommentControllerTestSuite) Test_Detail() {
 			name:       "not found error",
 			httpMethod: http.MethodGet,
 			input:      struct{ commentID any }{commentID: commentID},
-			requestHeaders: struct{ authorization string }{
-				authorization: accessToken,
-			},
 			prepareMock: func(t *testing.T) {
 				expectedResult = commentResponse
-				mockAuthFuncCall()
-
 				suite.commentService.EXPECT().
 					Detail(gomock.Any(), gomock.Eq(commentID)).
 					Return(nil, sharedErrs.NotFoundErr).
@@ -298,13 +255,8 @@ func (suite *CommentControllerTestSuite) Test_Detail() {
 			name:       "unexpected error",
 			httpMethod: http.MethodGet,
 			input:      struct{ commentID any }{commentID: commentID},
-			requestHeaders: struct{ authorization string }{
-				authorization: accessToken,
-			},
 			prepareMock: func(t *testing.T) {
 				expectedResult = commentResponse
-				mockAuthFuncCall()
-
 				suite.commentService.EXPECT().
 					Detail(gomock.Any(), gomock.Eq(commentID)).
 					Return(nil, sharedErrs.InternalServerErr).
@@ -361,15 +313,6 @@ func (suite *CommentControllerTestSuite) Test_Store() {
 		Rating:  util.ToPointerValue(uint8(5)),
 	}
 	comment := m.InitCommentDomain()
-	accessToken, session := m.MockAccessToken()
-	mockAuthFuncCall := func() {
-		suite.repo.EXPECT().FindSessionBySessionID(gomock.Any(), gomock.Any()).
-			Return(session, nil).
-			Times(1)
-		suite.repo.EXPECT().FindUserByID(gomock.Any(), gomock.Eq(session.UserID)).
-			Return(m.InitUserDomain(), nil).
-			Times(1)
-	}
 
 	var expectedResult *response.Comment
 
@@ -389,12 +332,8 @@ func (suite *CommentControllerTestSuite) Test_Store() {
 			name:       "success",
 			httpMethod: http.MethodPost,
 			input:      createCommentReq,
-			requestHeaders: struct{ authorization string }{
-				authorization: accessToken,
-			},
 			prepareMock: func(t *testing.T) {
 				expectedResult = response.NewCommentFromDomain(comment)
-				mockAuthFuncCall()
 
 				suite.commentService.EXPECT().
 					Store(gomock.Any(), gomock.Any()).
@@ -407,12 +346,8 @@ func (suite *CommentControllerTestSuite) Test_Store() {
 			name:       "validation error",
 			httpMethod: http.MethodPost,
 			input:      nil,
-			requestHeaders: struct{ authorization string }{
-				authorization: accessToken,
-			},
 			prepareMock: func(t *testing.T) {
 				expectedResult = response.NewCommentFromDomain(comment)
-				mockAuthFuncCall()
 
 				suite.commentService.EXPECT().
 					Store(gomock.Any(), gomock.Any()).
@@ -474,15 +409,6 @@ func (suite *CommentControllerTestSuite) Test_Update() {
 		Rating:  util.ToPointerValue(uint8(5)),
 	}
 	comment := m.InitCommentDomain()
-	accessToken, session := m.MockAccessToken()
-	mockAuthFuncCall := func() {
-		suite.repo.EXPECT().FindSessionBySessionID(gomock.Any(), gomock.Any()).
-			Return(session, nil).
-			Times(1)
-		suite.repo.EXPECT().FindUserByID(gomock.Any(), gomock.Eq(session.UserID)).
-			Return(m.InitUserDomain(), nil).
-			Times(1)
-	}
 
 	var expectedResult *response.Comment
 
@@ -508,12 +434,8 @@ func (suite *CommentControllerTestSuite) Test_Update() {
 				commentID any
 				req       any
 			}{commentID: comment.ID, req: updateCommentReq},
-			requestHeaders: struct{ authorization string }{
-				authorization: accessToken,
-			},
 			prepareMock: func(t *testing.T) {
 				expectedResult = response.NewCommentFromDomain(comment)
-				mockAuthFuncCall()
 
 				suite.commentService.EXPECT().
 					Update(gomock.Any(), gomock.Any()).
@@ -529,9 +451,6 @@ func (suite *CommentControllerTestSuite) Test_Update() {
 				commentID any
 				req       any
 			}{commentID: "invalid", req: updateCommentReq},
-			requestHeaders: struct{ authorization string }{
-				authorization: accessToken,
-			},
 			prepareMock: func(t *testing.T) {
 				suite.commentService.EXPECT().
 					Update(gomock.Any(), gomock.Any()).
@@ -588,15 +507,6 @@ func (suite *CommentControllerTestSuite) Test_Update() {
 
 func (suite *CommentControllerTestSuite) Test_Delete() {
 	commentID := uint64(1)
-	accessToken, session := m.MockAccessToken()
-	mockAuthFuncCall := func() {
-		suite.repo.EXPECT().FindSessionBySessionID(gomock.Any(), gomock.Any()).
-			Return(session, nil).
-			Times(1)
-		suite.repo.EXPECT().FindUserByID(gomock.Any(), gomock.Eq(session.UserID)).
-			Return(m.InitUserDomain(), nil).
-			Times(1)
-	}
 
 	type testCase struct {
 		name           string
@@ -614,11 +524,7 @@ func (suite *CommentControllerTestSuite) Test_Delete() {
 			name:       "success",
 			httpMethod: http.MethodDelete,
 			input:      commentID,
-			requestHeaders: struct{ authorization string }{
-				authorization: accessToken,
-			},
 			prepareMock: func(t *testing.T) {
-				mockAuthFuncCall()
 
 				suite.commentService.EXPECT().
 					Delete(gomock.Any(), gomock.Eq(commentID)).
@@ -631,11 +537,7 @@ func (suite *CommentControllerTestSuite) Test_Delete() {
 			name:       "invalid comment id",
 			httpMethod: http.MethodDelete,
 			input:      "invalid",
-			requestHeaders: struct{ authorization string }{
-				authorization: accessToken,
-			},
 			prepareMock: func(t *testing.T) {
-				mockAuthFuncCall()
 				suite.commentService.EXPECT().
 					Delete(gomock.Any(), gomock.Eq(commentID)).
 					Times(0)
@@ -646,11 +548,7 @@ func (suite *CommentControllerTestSuite) Test_Delete() {
 			name:       "unexpect error",
 			httpMethod: http.MethodDelete,
 			input:      commentID,
-			requestHeaders: struct{ authorization string }{
-				authorization: accessToken,
-			},
 			prepareMock: func(t *testing.T) {
-				mockAuthFuncCall()
 				suite.commentService.EXPECT().
 					Delete(gomock.Any(), gomock.Eq(commentID)).
 					Return(sharedErrs.InternalServerErr).

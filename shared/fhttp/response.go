@@ -1,10 +1,10 @@
 package fhttp
 
 import (
-	sharedErrs "base_project/shared/errors"
-	"base_project/util/constant"
-	"base_project/util/logger"
 	"context"
+	sharedErrs "coupon_be/shared/errors"
+	"coupon_be/util/constant"
+	"coupon_be/util/logger"
 	"encoding/json"
 	"net/http"
 )

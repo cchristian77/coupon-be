@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"base_project/shared/fhttp"
-	"base_project/util/logger"
+	"coupon_be/shared/fhttp"
+	"coupon_be/util/logger"
 	"fmt"
 	"net/http"
 	"runtime/debug"

@@ -1,6 +1,6 @@
 package response
 
-import "base_project/util"
+import "coupon_be/util"
 
 // Meta represents metadata for paginated responses.
 type Meta struct {

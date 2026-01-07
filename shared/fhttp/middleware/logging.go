@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"base_project/util/config"
-	"base_project/util/logger"
 	"bytes"
+	"coupon_be/util/config"
+	"coupon_be/util/logger"
 	"fmt"
 	"io"
 	"net/http"

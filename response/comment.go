@@ -1,8 +1,8 @@
 package response
 
 import (
-	"base_project/domain"
-	"base_project/util"
+	"coupon_be/domain"
+	"coupon_be/util"
 	"time"
 )
 

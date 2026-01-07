@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"base_project/util/logger"
+	"coupon_be/util/logger"
 	"net/http"
 	"time"
 )

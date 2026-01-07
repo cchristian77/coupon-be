@@ -10,9 +10,9 @@
 package service
 
 import (
-	request "base_project/request"
-	response "base_project/response"
 	context "context"
+	request "coupon_be/request"
+	response "coupon_be/response"
 	reflect "reflect"
 
 	gomock "go.uber.org/mock/gomock"

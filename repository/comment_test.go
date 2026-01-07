@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"base_project/domain"
-	m "base_project/mock"
-	"base_project/util"
+	"coupon_be/domain"
+	m "coupon_be/mock"
+	"coupon_be/util"
 	"database/sql/driver"
 	"errors"
 	"testing"

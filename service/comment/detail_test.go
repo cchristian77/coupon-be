@@ -1,11 +1,11 @@
 package comment
 
 import (
-	"base_project/domain"
-	m "base_project/mock"
-	"base_project/response"
-	sharedErrs "base_project/shared/errors"
-	"base_project/util"
+	"coupon_be/domain"
+	m "coupon_be/mock"
+	"coupon_be/response"
+	sharedErrs "coupon_be/shared/errors"
+	"coupon_be/util"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

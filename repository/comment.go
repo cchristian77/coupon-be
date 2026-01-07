@@ -1,12 +1,12 @@
 package repository
 
 import (
-	"base_project/domain"
-	sharedErrs "base_project/shared/errors"
-	"base_project/shared/external/database"
-	"base_project/util"
-	"base_project/util/logger"
 	"context"
+	"coupon_be/domain"
+	sharedErrs "coupon_be/shared/errors"
+	"coupon_be/shared/external/database"
+	"coupon_be/util"
+	"coupon_be/util/logger"
 
 	"gorm.io/gorm/clause"
 )

@@ -1,8 +1,8 @@
 package logger
 
 import (
-	"base_project/util/constant"
 	"context"
+	"coupon_be/util/constant"
 	"fmt"
 	"os"
 
@@ -71,21 +71,11 @@ func Debug(ctx context.Context, message string, args ...any) {
 
 func getZapFieldsFromCtx(ctx context.Context) []zapcore.Field {
 	correlationID := constant.CorrelationIDFromCtx(ctx)
-	authUser := constant.AuthUserFromCtx(ctx)
-
-	var userID uint64
-	if authUser != nil {
-		userID = authUser.ID
-	}
 
 	var fields []zapcore.Field
 
 	if correlationID != "" {
 		fields = append(fields, zap.String(constant.XCorrelationIDKey, correlationID))
-	}
-
-	if userID != 0 {
-		fields = append(fields, zap.Uint64(constant.XUserIDKey, userID))
 	}
 
 	return fields

@@ -1,9 +1,9 @@
 package repository
 
 import (
-	m "base_project/mock"
-	"base_project/util/logger"
 	"context"
+	m "coupon_be/mock"
+	"coupon_be/util/logger"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"

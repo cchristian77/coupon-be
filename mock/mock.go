@@ -1,16 +1,13 @@
 package mock
 
 import (
-	"base_project/domain"
-	"base_project/domain/enums"
-	"base_project/response"
-	"base_project/util"
-	tokenMaker "base_project/util/token"
+	"coupon_be/domain"
+	"coupon_be/response"
+	"coupon_be/util"
 	"fmt"
 	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -44,28 +41,6 @@ func NewMockDB() (*gorm.DB, sqlmock.Sqlmock, error) {
 	return gormDB, mock, err
 }
 
-func MockAccessToken() (string, *domain.Session) {
-	tokenMaker.Initialise(DefaultJWTSecretForTest)
-
-	sessionID := uuid.New()
-	userID := uint64(1)
-	now := time.Now()
-	expiresAt := now.Add(1 * time.Hour)
-
-	accessToken, _, _ := tokenMaker.Get().Generate(sessionID, userID, 1*time.Hour)
-
-	session := &domain.Session{
-		ID:                   1,
-		SessionID:            sessionID,
-		UserID:               userID,
-		AccessToken:          accessToken,
-		AccessTokenExpiresAt: expiresAt,
-		AccessTokenCreatedAt: now,
-	}
-
-	return accessToken, session
-}
-
 /*
  * ============================= DOMAIN =============================
  */
@@ -81,10 +56,8 @@ func InitUserDomain() *domain.User {
 		},
 		DeletedAt: nil,
 		Username:  "username",
-		Email:     "test@mail.com",
 		FullName:  "full_name",
 		Password:  "password",
-		Role:      enums.ADMINRole,
 	}
 }
 
@@ -101,23 +74,6 @@ func InitCommentDomain() *domain.Comment {
 		PostID:  1,
 		Comment: "comment test",
 		Rating:  util.ToPointerValue(uint8(5)),
-	}
-}
-
-func InitPostDomain() *domain.Post {
-	now := time.Now()
-
-	return &domain.Post{
-		BaseModel: domain.BaseModel{
-			ID:        1,
-			CreatedAt: now,
-			UpdatedAt: now,
-		},
-		UserID: 1,
-		Slug:   "slug-test",
-		Title:  "title test",
-		Body:   "body test",
-		Status: enums.PUBLISHEDPostStatus,
 	}
 }
 

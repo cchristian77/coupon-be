@@ -1,11 +1,11 @@
 package main
 
 import (
-	api "base_project/entrypoint"
-	"base_project/shared/fhttp"
-	"base_project/util/config"
-	"base_project/util/logger"
 	"context"
+	api "coupon_be/entrypoint"
+	"coupon_be/shared/fhttp"
+	"coupon_be/util/config"
+	"coupon_be/util/logger"
 	"fmt"
 )
 

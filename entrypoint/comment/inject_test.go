@@ -1,8 +1,8 @@
 package comment
 
 import (
-	m "base_project/mock"
 	"context"
+	m "coupon_be/mock"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

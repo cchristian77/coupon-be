@@ -1,8 +1,8 @@
 package database
 
 import (
-	"base_project/util/config"
-	"base_project/util/logger"
+	"coupon_be/util/config"
+	"coupon_be/util/logger"
 	"database/sql"
 	"fmt"
 	"time"

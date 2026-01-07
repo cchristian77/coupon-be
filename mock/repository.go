@@ -10,10 +10,9 @@
 package mock
 
 import (
-	domain "base_project/domain"
-	enums "base_project/domain/enums"
-	util "base_project/util"
 	context "context"
+	domain "coupon_be/domain"
+	util "coupon_be/util"
 	reflect "reflect"
 
 	gomock "go.uber.org/mock/gomock"
@@ -58,36 +57,6 @@ func (mr *MockRepositoryMockRecorder) CreateComment(ctx, data any) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateComment", reflect.TypeOf((*MockRepository)(nil).CreateComment), ctx, data)
 }
 
-// CreatePost mocks base method.
-func (m *MockRepository) CreatePost(ctx context.Context, data *domain.Post) (*domain.Post, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreatePost", ctx, data)
-	ret0, _ := ret[0].(*domain.Post)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CreatePost indicates an expected call of CreatePost.
-func (mr *MockRepositoryMockRecorder) CreatePost(ctx, data any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreatePost", reflect.TypeOf((*MockRepository)(nil).CreatePost), ctx, data)
-}
-
-// CreateSession mocks base method.
-func (m *MockRepository) CreateSession(ctx context.Context, data *domain.Session) (*domain.Session, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateSession", ctx, data)
-	ret0, _ := ret[0].(*domain.Session)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CreateSession indicates an expected call of CreateSession.
-func (mr *MockRepositoryMockRecorder) CreateSession(ctx, data any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSession", reflect.TypeOf((*MockRepository)(nil).CreateSession), ctx, data)
-}
-
 // CreateUser mocks base method.
 func (m *MockRepository) CreateUser(ctx context.Context, data *domain.User) (*domain.User, error) {
 	m.ctrl.T.Helper()
@@ -115,34 +84,6 @@ func (m *MockRepository) DeleteCommentByID(ctx context.Context, id uint64) error
 func (mr *MockRepositoryMockRecorder) DeleteCommentByID(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteCommentByID", reflect.TypeOf((*MockRepository)(nil).DeleteCommentByID), ctx, id)
-}
-
-// DeletePostByID mocks base method.
-func (m *MockRepository) DeletePostByID(ctx context.Context, id uint64) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeletePostByID", ctx, id)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeletePostByID indicates an expected call of DeletePostByID.
-func (mr *MockRepositoryMockRecorder) DeletePostByID(ctx, id any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeletePostByID", reflect.TypeOf((*MockRepository)(nil).DeletePostByID), ctx, id)
-}
-
-// DeleteSessionByID mocks base method.
-func (m *MockRepository) DeleteSessionByID(ctx context.Context, id uint64) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteSessionByID", ctx, id)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteSessionByID indicates an expected call of DeleteSessionByID.
-func (mr *MockRepositoryMockRecorder) DeleteSessionByID(ctx, id any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteSessionByID", reflect.TypeOf((*MockRepository)(nil).DeleteSessionByID), ctx, id)
 }
 
 // FindBatchUsers mocks base method.
@@ -220,96 +161,6 @@ func (mr *MockRepositoryMockRecorder) FindCommentsPaginatedByUserID(ctx, userID,
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindCommentsPaginatedByUserID", reflect.TypeOf((*MockRepository)(nil).FindCommentsPaginatedByUserID), ctx, userID, p)
 }
 
-// FindPostByID mocks base method.
-func (m *MockRepository) FindPostByID(ctx context.Context, id uint64, withComments bool) (*domain.Post, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindPostByID", ctx, id, withComments)
-	ret0, _ := ret[0].(*domain.Post)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// FindPostByID indicates an expected call of FindPostByID.
-func (mr *MockRepositoryMockRecorder) FindPostByID(ctx, id, withComments any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindPostByID", reflect.TypeOf((*MockRepository)(nil).FindPostByID), ctx, id, withComments)
-}
-
-// FindPostByIDAndUserID mocks base method.
-func (m *MockRepository) FindPostByIDAndUserID(ctx context.Context, id, userID uint64) (*domain.Post, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindPostByIDAndUserID", ctx, id, userID)
-	ret0, _ := ret[0].(*domain.Post)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// FindPostByIDAndUserID indicates an expected call of FindPostByIDAndUserID.
-func (mr *MockRepositoryMockRecorder) FindPostByIDAndUserID(ctx, id, userID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindPostByIDAndUserID", reflect.TypeOf((*MockRepository)(nil).FindPostByIDAndUserID), ctx, id, userID)
-}
-
-// FindPostBySlug mocks base method.
-func (m *MockRepository) FindPostBySlug(ctx context.Context, slug string) (*domain.Post, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindPostBySlug", ctx, slug)
-	ret0, _ := ret[0].(*domain.Post)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// FindPostBySlug indicates an expected call of FindPostBySlug.
-func (mr *MockRepositoryMockRecorder) FindPostBySlug(ctx, slug any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindPostBySlug", reflect.TypeOf((*MockRepository)(nil).FindPostBySlug), ctx, slug)
-}
-
-// FindPostsPaginatedByUserID mocks base method.
-func (m *MockRepository) FindPostsPaginatedByUserID(ctx context.Context, userID uint64, search string, p *util.Pagination) ([]*domain.Post, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindPostsPaginatedByUserID", ctx, userID, search, p)
-	ret0, _ := ret[0].([]*domain.Post)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// FindPostsPaginatedByUserID indicates an expected call of FindPostsPaginatedByUserID.
-func (mr *MockRepositoryMockRecorder) FindPostsPaginatedByUserID(ctx, userID, search, p any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindPostsPaginatedByUserID", reflect.TypeOf((*MockRepository)(nil).FindPostsPaginatedByUserID), ctx, userID, search, p)
-}
-
-// FindPublishedPostsPaginated mocks base method.
-func (m *MockRepository) FindPublishedPostsPaginated(ctx context.Context, search string, p *util.Pagination) ([]*domain.Post, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindPublishedPostsPaginated", ctx, search, p)
-	ret0, _ := ret[0].([]*domain.Post)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// FindPublishedPostsPaginated indicates an expected call of FindPublishedPostsPaginated.
-func (mr *MockRepositoryMockRecorder) FindPublishedPostsPaginated(ctx, search, p any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindPublishedPostsPaginated", reflect.TypeOf((*MockRepository)(nil).FindPublishedPostsPaginated), ctx, search, p)
-}
-
-// FindSessionBySessionID mocks base method.
-func (m *MockRepository) FindSessionBySessionID(ctx context.Context, sessionID string) (*domain.Session, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindSessionBySessionID", ctx, sessionID)
-	ret0, _ := ret[0].(*domain.Session)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// FindSessionBySessionID indicates an expected call of FindSessionBySessionID.
-func (mr *MockRepositoryMockRecorder) FindSessionBySessionID(ctx, sessionID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindSessionBySessionID", reflect.TypeOf((*MockRepository)(nil).FindSessionBySessionID), ctx, sessionID)
-}
-
 // FindUserByEmail mocks base method.
 func (m *MockRepository) FindUserByEmail(ctx context.Context, email string) (*domain.User, error) {
 	m.ctrl.T.Helper()
@@ -368,34 +219,4 @@ func (m *MockRepository) UpdateComment(ctx context.Context, data *domain.Comment
 func (mr *MockRepositoryMockRecorder) UpdateComment(ctx, data any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateComment", reflect.TypeOf((*MockRepository)(nil).UpdateComment), ctx, data)
-}
-
-// UpdatePost mocks base method.
-func (m *MockRepository) UpdatePost(ctx context.Context, data *domain.Post) (*domain.Post, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdatePost", ctx, data)
-	ret0, _ := ret[0].(*domain.Post)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdatePost indicates an expected call of UpdatePost.
-func (mr *MockRepositoryMockRecorder) UpdatePost(ctx, data any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePost", reflect.TypeOf((*MockRepository)(nil).UpdatePost), ctx, data)
-}
-
-// UpdatePostStatus mocks base method.
-func (m *MockRepository) UpdatePostStatus(ctx context.Context, id uint64, status enums.PostStatus) (*domain.Post, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdatePostStatus", ctx, id, status)
-	ret0, _ := ret[0].(*domain.Post)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdatePostStatus indicates an expected call of UpdatePostStatus.
-func (mr *MockRepositoryMockRecorder) UpdatePostStatus(ctx, id, status any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePostStatus", reflect.TypeOf((*MockRepository)(nil).UpdatePostStatus), ctx, id, status)
 }

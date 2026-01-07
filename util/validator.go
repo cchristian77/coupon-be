@@ -1,8 +1,8 @@
 package util
 
 import (
-	sharedErrs "base_project/shared/errors"
-	"base_project/shared/fhttp"
+	sharedErrs "coupon_be/shared/errors"
+	"coupon_be/shared/fhttp"
 	"errors"
 	"net/http"
 
