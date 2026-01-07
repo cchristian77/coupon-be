@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+#  payroll_api:
+#    build:
+#      context: "./"
+#      dockerfile: Dockerfile
+#    restart: always
+#    ports:
+#      - "9000:80"
+#    deploy:
+#      mode: replicated
+#      replicas: 1
+#    environment:
+#      DSN: "host=postgres_db port=5432 user=admin password=password dbname=payroll sslmode=disable timezone=UTC"
+
+  postgres_db:
+    image: 'postgres:14.7'
+    ports:
+      - "5432:5432"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: base
+    volumes:
+      - type: volume
+        source: base_vol
+        target: "/var/lib/postgresql/data"
+        read_only: false
+
+#  pgadmin:
+#    image: 'dpage/pgadmin4:latest'
+#    environment:
+#      - PGADMIN_DEFAULT_EMAIL=admin@domain.com
+#      - PGADMIN_DEFAULT_PASSWORD=password
+#    ports:
+#      - "5050:80"
+
+volumes:
+  base_vol:
+    name: base
