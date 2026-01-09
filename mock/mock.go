@@ -2,8 +2,6 @@ package mock
 
 import (
 	"coupon_be/domain"
-	"coupon_be/response"
-	"coupon_be/util"
 	"fmt"
 	"time"
 
@@ -54,41 +52,12 @@ func InitUserDomain() *domain.User {
 			CreatedAt: now,
 			UpdatedAt: now,
 		},
-		DeletedAt: nil,
-		Username:  "username",
-		FullName:  "full_name",
-		Password:  "password",
-	}
-}
-
-func InitCommentDomain() *domain.Comment {
-	now := time.Now()
-
-	return &domain.Comment{
-		BaseModel: domain.BaseModel{
-			ID:        1,
-			CreatedAt: now,
-			UpdatedAt: now,
-		},
-		UserID:  1,
-		PostID:  1,
-		Comment: "comment test",
-		Rating:  util.ToPointerValue(uint8(5)),
+		Username: "username",
+		FullName: "full_name",
+		Password: "password",
 	}
 }
 
 /*
  * ============================= Response =============================
  */
-
-func InitCommentResponse() *response.Comment {
-	now := time.Now()
-
-	return &response.Comment{
-		ID:        1,
-		CreatedAt: now,
-		UpdatedAt: now,
-		Username:  "username",
-		Comment:   "comment test",
-	}
-}

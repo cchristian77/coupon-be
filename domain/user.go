@@ -1,11 +1,11 @@
 package domain
 
-import "time"
+import "gorm.io/gorm"
 
 type User struct {
 	BaseModel
 
-	DeletedAt *time.Time
+	DeletedAt gorm.DeletedAt
 	Username  string
 	FullName  string
 	Password  string

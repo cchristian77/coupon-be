@@ -12,7 +12,6 @@ package mock
 import (
 	context "context"
 	domain "coupon_be/domain"
-	util "coupon_be/util"
 	reflect "reflect"
 
 	gomock "go.uber.org/mock/gomock"
@@ -42,19 +41,19 @@ func (m *MockRepository) EXPECT() *MockRepositoryMockRecorder {
 	return m.recorder
 }
 
-// CreateComment mocks base method.
-func (m *MockRepository) CreateComment(ctx context.Context, data *domain.Comment) (*domain.Comment, error) {
+// CreateCoupon mocks base method.
+func (m *MockRepository) CreateCoupon(ctx context.Context, data *domain.Coupon) (*domain.Coupon, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateComment", ctx, data)
-	ret0, _ := ret[0].(*domain.Comment)
+	ret := m.ctrl.Call(m, "CreateCoupon", ctx, data)
+	ret0, _ := ret[0].(*domain.Coupon)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// CreateComment indicates an expected call of CreateComment.
-func (mr *MockRepositoryMockRecorder) CreateComment(ctx, data any) *gomock.Call {
+// CreateCoupon indicates an expected call of CreateCoupon.
+func (mr *MockRepositoryMockRecorder) CreateCoupon(ctx, data any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateComment", reflect.TypeOf((*MockRepository)(nil).CreateComment), ctx, data)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateCoupon", reflect.TypeOf((*MockRepository)(nil).CreateCoupon), ctx, data)
 }
 
 // CreateUser mocks base method.
@@ -72,108 +71,79 @@ func (mr *MockRepositoryMockRecorder) CreateUser(ctx, data any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockRepository)(nil).CreateUser), ctx, data)
 }
 
-// DeleteCommentByID mocks base method.
-func (m *MockRepository) DeleteCommentByID(ctx context.Context, id uint64) error {
+// CreateUserClaim mocks base method.
+func (m *MockRepository) CreateUserClaim(ctx context.Context, data *domain.UserClaim) (*domain.UserClaim, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteCommentByID", ctx, id)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteCommentByID indicates an expected call of DeleteCommentByID.
-func (mr *MockRepositoryMockRecorder) DeleteCommentByID(ctx, id any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteCommentByID", reflect.TypeOf((*MockRepository)(nil).DeleteCommentByID), ctx, id)
-}
-
-// FindBatchUsers mocks base method.
-func (m *MockRepository) FindBatchUsers(ctx context.Context, batchSize int, lastID uint64) ([]*domain.User, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindBatchUsers", ctx, batchSize, lastID)
-	ret0, _ := ret[0].([]*domain.User)
+	ret := m.ctrl.Call(m, "CreateUserClaim", ctx, data)
+	ret0, _ := ret[0].(*domain.UserClaim)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// FindBatchUsers indicates an expected call of FindBatchUsers.
-func (mr *MockRepositoryMockRecorder) FindBatchUsers(ctx, batchSize, lastID any) *gomock.Call {
+// CreateUserClaim indicates an expected call of CreateUserClaim.
+func (mr *MockRepositoryMockRecorder) CreateUserClaim(ctx, data any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindBatchUsers", reflect.TypeOf((*MockRepository)(nil).FindBatchUsers), ctx, batchSize, lastID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUserClaim", reflect.TypeOf((*MockRepository)(nil).CreateUserClaim), ctx, data)
 }
 
-// FindCommentByID mocks base method.
-func (m *MockRepository) FindCommentByID(ctx context.Context, id uint64) (*domain.Comment, error) {
+// DecrementCouponRemainingAmount mocks base method.
+func (m *MockRepository) DecrementCouponRemainingAmount(ctx context.Context, id uint64) (*domain.Coupon, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindCommentByID", ctx, id)
-	ret0, _ := ret[0].(*domain.Comment)
+	ret := m.ctrl.Call(m, "DecrementCouponRemainingAmount", ctx, id)
+	ret0, _ := ret[0].(*domain.Coupon)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// FindCommentByID indicates an expected call of FindCommentByID.
-func (mr *MockRepositoryMockRecorder) FindCommentByID(ctx, id any) *gomock.Call {
+// DecrementCouponRemainingAmount indicates an expected call of DecrementCouponRemainingAmount.
+func (mr *MockRepositoryMockRecorder) DecrementCouponRemainingAmount(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindCommentByID", reflect.TypeOf((*MockRepository)(nil).FindCommentByID), ctx, id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecrementCouponRemainingAmount", reflect.TypeOf((*MockRepository)(nil).DecrementCouponRemainingAmount), ctx, id)
 }
 
-// FindCommentByIDAndUserID mocks base method.
-func (m *MockRepository) FindCommentByIDAndUserID(ctx context.Context, id, userID uint64) (*domain.Comment, error) {
+// FindCouponByID mocks base method.
+func (m *MockRepository) FindCouponByID(ctx context.Context, id uint64) (*domain.Coupon, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindCommentByIDAndUserID", ctx, id, userID)
-	ret0, _ := ret[0].(*domain.Comment)
+	ret := m.ctrl.Call(m, "FindCouponByID", ctx, id)
+	ret0, _ := ret[0].(*domain.Coupon)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// FindCommentByIDAndUserID indicates an expected call of FindCommentByIDAndUserID.
-func (mr *MockRepositoryMockRecorder) FindCommentByIDAndUserID(ctx, id, userID any) *gomock.Call {
+// FindCouponByID indicates an expected call of FindCouponByID.
+func (mr *MockRepositoryMockRecorder) FindCouponByID(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindCommentByIDAndUserID", reflect.TypeOf((*MockRepository)(nil).FindCommentByIDAndUserID), ctx, id, userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindCouponByID", reflect.TypeOf((*MockRepository)(nil).FindCouponByID), ctx, id)
 }
 
-// FindCommentsPaginatedByPostID mocks base method.
-func (m *MockRepository) FindCommentsPaginatedByPostID(ctx context.Context, postID uint64, p *util.Pagination) ([]*domain.Comment, error) {
+// FindCouponByName mocks base method.
+func (m *MockRepository) FindCouponByName(ctx context.Context, name string, withClaimBy bool) (*domain.Coupon, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindCommentsPaginatedByPostID", ctx, postID, p)
-	ret0, _ := ret[0].([]*domain.Comment)
+	ret := m.ctrl.Call(m, "FindCouponByName", ctx, name, withClaimBy)
+	ret0, _ := ret[0].(*domain.Coupon)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// FindCommentsPaginatedByPostID indicates an expected call of FindCommentsPaginatedByPostID.
-func (mr *MockRepositoryMockRecorder) FindCommentsPaginatedByPostID(ctx, postID, p any) *gomock.Call {
+// FindCouponByName indicates an expected call of FindCouponByName.
+func (mr *MockRepositoryMockRecorder) FindCouponByName(ctx, name, withClaimBy any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindCommentsPaginatedByPostID", reflect.TypeOf((*MockRepository)(nil).FindCommentsPaginatedByPostID), ctx, postID, p)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindCouponByName", reflect.TypeOf((*MockRepository)(nil).FindCouponByName), ctx, name, withClaimBy)
 }
 
-// FindCommentsPaginatedByUserID mocks base method.
-func (m *MockRepository) FindCommentsPaginatedByUserID(ctx context.Context, userID uint64, p *util.Pagination) ([]*domain.Comment, error) {
+// FindCoupons mocks base method.
+func (m *MockRepository) FindCoupons(ctx context.Context, search string) ([]*domain.Coupon, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindCommentsPaginatedByUserID", ctx, userID, p)
-	ret0, _ := ret[0].([]*domain.Comment)
+	ret := m.ctrl.Call(m, "FindCoupons", ctx, search)
+	ret0, _ := ret[0].([]*domain.Coupon)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// FindCommentsPaginatedByUserID indicates an expected call of FindCommentsPaginatedByUserID.
-func (mr *MockRepositoryMockRecorder) FindCommentsPaginatedByUserID(ctx, userID, p any) *gomock.Call {
+// FindCoupons indicates an expected call of FindCoupons.
+func (mr *MockRepositoryMockRecorder) FindCoupons(ctx, search any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindCommentsPaginatedByUserID", reflect.TypeOf((*MockRepository)(nil).FindCommentsPaginatedByUserID), ctx, userID, p)
-}
-
-// FindUserByEmail mocks base method.
-func (m *MockRepository) FindUserByEmail(ctx context.Context, email string) (*domain.User, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindUserByEmail", ctx, email)
-	ret0, _ := ret[0].(*domain.User)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// FindUserByEmail indicates an expected call of FindUserByEmail.
-func (mr *MockRepositoryMockRecorder) FindUserByEmail(ctx, email any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserByEmail", reflect.TypeOf((*MockRepository)(nil).FindUserByEmail), ctx, email)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindCoupons", reflect.TypeOf((*MockRepository)(nil).FindCoupons), ctx, search)
 }
 
 // FindUserByID mocks base method.
@@ -206,17 +176,32 @@ func (mr *MockRepositoryMockRecorder) FindUserByUsername(ctx, username any) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserByUsername", reflect.TypeOf((*MockRepository)(nil).FindUserByUsername), ctx, username)
 }
 
-// UpdateComment mocks base method.
-func (m *MockRepository) UpdateComment(ctx context.Context, data *domain.Comment) (*domain.Comment, error) {
+// FindUserClaimByUserIDAndCouponID mocks base method.
+func (m *MockRepository) FindUserClaimByUserIDAndCouponID(ctx context.Context, userID, couponID uint64) (*domain.UserClaim, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateComment", ctx, data)
-	ret0, _ := ret[0].(*domain.Comment)
+	ret := m.ctrl.Call(m, "FindUserClaimByUserIDAndCouponID", ctx, userID, couponID)
+	ret0, _ := ret[0].(*domain.UserClaim)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// UpdateComment indicates an expected call of UpdateComment.
-func (mr *MockRepositoryMockRecorder) UpdateComment(ctx, data any) *gomock.Call {
+// FindUserClaimByUserIDAndCouponID indicates an expected call of FindUserClaimByUserIDAndCouponID.
+func (mr *MockRepositoryMockRecorder) FindUserClaimByUserIDAndCouponID(ctx, userID, couponID any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateComment", reflect.TypeOf((*MockRepository)(nil).UpdateComment), ctx, data)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserClaimByUserIDAndCouponID", reflect.TypeOf((*MockRepository)(nil).FindUserClaimByUserIDAndCouponID), ctx, userID, couponID)
+}
+
+// UpdateCoupon mocks base method.
+func (m *MockRepository) UpdateCoupon(ctx context.Context, data *domain.Coupon) (*domain.Coupon, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateCoupon", ctx, data)
+	ret0, _ := ret[0].(*domain.Coupon)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateCoupon indicates an expected call of UpdateCoupon.
+func (mr *MockRepositoryMockRecorder) UpdateCoupon(ctx, data any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCoupon", reflect.TypeOf((*MockRepository)(nil).UpdateCoupon), ctx, data)
 }

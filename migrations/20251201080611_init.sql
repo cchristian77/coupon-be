@@ -12,8 +12,10 @@ CREATE TABLE IF NOT EXISTS users
 
     username   VARCHAR(100) UNIQUE NOT NULL,
     password   TEXT                NOT NULL,
-    full_name  VARCHAR(255),
+    full_name  VARCHAR(255)
 );
+
+CREATE UNIQUE INDEX username_unique_idx ON users(username) WHERE deleted_at IS NULL;
 
 -- +goose Down
 -- +goose StatementBegin
@@ -21,5 +23,3 @@ SELECT 'down SQL query';
 -- +goose StatementEnd
 
 DROP TABLE IF EXISTS users;
-
-DROP TYPE user_role;

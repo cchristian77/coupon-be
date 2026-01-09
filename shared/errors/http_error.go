@@ -64,6 +64,8 @@ func getStatusCodeByErrorKind(k Kind) int {
 		return http.StatusUnauthorized
 	case ErrKindForbidden:
 		return http.StatusForbidden
+	case ErrKindConflict, ErrKindAcquireRedisLock:
+		return http.StatusConflict
 	default:
 		return http.StatusInternalServerError
 	}

@@ -15,8 +15,7 @@ type (
 		App      AppConfig      `env:"app"`
 		Database DatabaseConfig `env:"database"`
 		Context  ContextConfig  `env:"context"`
-		Auth     AuthConfig     `env:"auth"`
-		JWTKey   string         `env:"jwt_key"`
+		Redis    RedisConfig    `env:"redis"`
 	}
 
 	AppConfig struct {
@@ -39,9 +38,14 @@ type (
 		Timeout string `env:"timeout"`
 	}
 
-	AuthConfig struct {
-		AccessTokenExpiration  string `env:"access_token_expiration"`
-		RefreshTokenExpiration string `env:"refresh_token_expiration"`
+	RedisConfig struct {
+		Host                 string `envconfig:"host"`
+		Port                 string `envconfig:"port"`
+		Password             string `envconfig:"password"`
+		MaxIdleConnections   int    `envconfig:"max_idle_connections"`
+		MaxActiveConnections int    `envconfig:"max_active_connections"`
+		IdleTimeout          int    `envconfig:"idle_timeout"`
+		UseTLS               bool   `envconfig:"use_tls"`
 	}
 )
 

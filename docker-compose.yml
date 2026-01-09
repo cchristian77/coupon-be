@@ -25,12 +25,23 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: base
+      POSTGRES_DB: coupon_db
     volumes:
       - type: volume
-        source: base_vol
+        source: coupon-vol
         target: "/var/lib/postgresql/data"
         read_only: false
+
+  # Redis Configuration
+  redis:
+    image: redis:latest
+    container_name: redis
+    command: redis-server --requirepass password
+    restart: always
+    volumes:
+      - redis-vol:/data
+    ports:
+      - "6379:6379"
 
 #  pgadmin:
 #    image: 'dpage/pgadmin4:latest'
@@ -41,5 +52,8 @@ services:
 #      - "5050:80"
 
 volumes:
-  base_vol:
-    name: base
+  coupon-vol:
+    name: coupon
+
+  redis-vol:
+    name: redis

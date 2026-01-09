@@ -4,8 +4,7 @@ import (
 	"context"
 	"coupon_be/repository"
 	"coupon_be/service/user"
-	"coupon_be/util/logger"
-	"fmt"
+	sharedErrs "coupon_be/shared/errors"
 
 	"gorm.io/gorm"
 )
@@ -14,8 +13,8 @@ import (
 func NewController(ctx context.Context, repository repository.Repository, writerDB *gorm.DB) (*Controller, error) {
 	authService, err := user.NewService(repository, writerDB)
 	if err != nil {
-		logger.L().Fatal(fmt.Sprintf("auth service initialization error: %v", err))
+		return nil, sharedErrs.NewWithCause(sharedErrs.ErrKindCodeInjection, "Fail to initiate user service", err)
 	}
 
-	return &Controller{auth: authService}, nil
+	return &Controller{user: authService}, nil
 }

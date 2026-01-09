@@ -91,9 +91,9 @@ Before running the application, you need to setup the necessary prerequisites, a
    
 ### Goose Command  
    ```bash
-   goose -dir ./migrations  postgres "user=admin password=password dbname=base sslmode=disable" create migration_file_name sql 
-   goose -dir ./migrations  postgres "user=admin password=password dbname=base sslmode=disable" up 
-   goose -dir ./migrations  postgres "user=admin password=password dbname=base sslmode=disable" status
+   goose -dir ./migrations  postgres "user=admin password=password dbname=coupon_db sslmode=disable" create migration_file_name sql 
+   goose -dir ./migrations  postgres "user=admin password=password dbname=coupon_db sslmode=disable" up 
+   goose -dir ./migrations  postgres "user=admin password=password dbname=coupon_db sslmode=disable" status
    ```
 
 ### Mockgen Command
