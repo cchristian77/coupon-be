@@ -1,6 +1,7 @@
 version: "3.8"
 
 services:
+  # Backed Configuration
   coupon_be:
     build:
       context: "./"
@@ -17,6 +18,7 @@ services:
       - postgres_db
       - redis
 
+  # Database Configuration
   postgres_db:
     image: 'postgres:14.7'
     ports:

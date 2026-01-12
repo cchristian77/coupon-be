@@ -9,6 +9,4 @@ type User struct {
 	Username  string
 	FullName  string
 	Password  string
-
-	ClaimedCoupons []*Coupon `gorm:"many2many:user_claims;"`
 }

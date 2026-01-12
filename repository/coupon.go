@@ -36,7 +36,7 @@ func (r *repo) FindCouponByName(ctx context.Context, name string, withClaimBy bo
 
 	query := db.Debug().WithContext(ctx)
 	if withClaimBy {
-		query.Preload("ClaimBy")
+		query = query.Preload("ClaimedBy")
 	}
 
 	err := query.Where("name = ?", name).

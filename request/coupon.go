@@ -9,7 +9,7 @@ type FilterCoupon struct {
 type UpsertCoupon struct {
 	ID uint64 `json:"-"`
 
-	Name   string `json:"coupon_name" validate:"required"`
+	Name   string `json:"name" validate:"required"`
 	Amount uint64 `json:"amount" validate:"required,gt=0"`
 }
 

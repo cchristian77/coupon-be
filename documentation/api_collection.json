@@ -1,0 +1,397 @@
+{
+  "v": 11,
+  "name": "Coupon",
+  "folders": [],
+  "requests": [
+    {
+      "v": "17",
+      "name": "Index",
+      "method": "GET",
+      "endpoint": "<<base_url>>/coupons",
+      "params": [
+        {
+          "key": "page",
+          "value": "1",
+          "active": true,
+          "description": "optional | integer"
+        },
+        {
+          "key": "per_page",
+          "value": "20",
+          "active": true,
+          "description": "optional | integer"
+        },
+        {
+          "key": "search",
+          "value": "",
+          "active": true,
+          "description": "optional | string"
+        }
+      ],
+      "headers": [],
+      "preRequestScript": "",
+      "testScript": "",
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "requestVariables": [],
+      "responses": {
+        "Success": {
+          "name": "Success",
+          "originalRequest": {
+            "v": "6",
+            "name": "Index",
+            "method": "GET",
+            "endpoint": "<<base_url>>/coupons",
+            "headers": [],
+            "params": [],
+            "body": {
+              "contentType": null,
+              "body": null
+            },
+            "auth": {
+              "authType": "none",
+              "authActive": true
+            },
+            "requestVariables": []
+          },
+          "status": "OK",
+          "code": 200,
+          "headers": [
+            {
+              "key": "content-length",
+              "value": "120"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "date",
+              "value": "Thu, 08 Jan 2026 08:09:16 GMT"
+            }
+          ],
+          "body": "{\"data\":[{\"name\":\"COUPON_TEST\",\"amount\":1},{\"name\":\"COUPON_TEST_1\",\"amount\":5},{\"name\":\"TEST\",\"amount\":1}],\"status\":200}"
+        }
+      },
+      "description": null
+    },
+    {
+      "v": "17",
+      "name": "Detail",
+      "method": "GET",
+      "endpoint": "<<base_url>>/coupons/coupon_test",
+      "params": [],
+      "headers": [],
+      "preRequestScript": "",
+      "testScript": "",
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "requestVariables": [],
+      "responses": {
+        "Not Found": {
+          "name": "Not Found",
+          "originalRequest": {
+            "v": "6",
+            "name": "Detail",
+            "method": "GET",
+            "endpoint": "<<base_url>>/comments/v1/999",
+            "headers": [],
+            "params": [],
+            "body": {
+              "contentType": null,
+              "body": null
+            },
+            "auth": {
+              "authType": "bearer",
+              "token": "<<access_token>>",
+              "authActive": true
+            },
+            "requestVariables": []
+          },
+          "status": "Not Found",
+          "code": 404,
+          "headers": [
+            {
+              "key": "content-length",
+              "value": "99"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "correlation-id",
+              "value": "aa019afd-4f27-4a73-8dd6-bf7f1fb45378"
+            },
+            {
+              "key": "date",
+              "value": "Tue, 02 Dec 2025 07:13:45 GMT"
+            }
+          ],
+          "body": "{\"correlation_id\":\"aa019afd-4f27-4a73-8dd6-bf7f1fb45378\",\"message\":\"record not found\",\"status\":404}"
+        },
+        "Success": {
+          "name": "Success",
+          "originalRequest": {
+            "v": "6",
+            "name": "Detail",
+            "method": "GET",
+            "endpoint": "<<base_url>>/coupons/coupon_test",
+            "headers": [],
+            "params": [],
+            "body": {
+              "contentType": null,
+              "body": null
+            },
+            "auth": {
+              "authType": "none",
+              "authActive": true
+            },
+            "requestVariables": []
+          },
+          "status": "OK",
+          "code": 200,
+          "headers": [
+            {
+              "key": "content-length",
+              "value": "180"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "date",
+              "value": "Mon, 12 Jan 2026 06:10:30 GMT"
+            }
+          ],
+          "body": "{\"data\":{\"name\":\"COUPON_TEST\",\"amount\":100,\"remaining_amount\":0,\"claim_by\":[\"user_1\",\"user_11\",\"user_31\",\"user_42\",\"user_55\",\"user_67\",\"user_79\",\"user_86\",\"user_87\"]},\"status\":200}"
+        }
+      },
+      "description": null
+    },
+    {
+      "v": "17",
+      "name": "Store",
+      "method": "POST",
+      "endpoint": "<<base_url>>/coupons",
+      "params": [],
+      "headers": [],
+      "preRequestScript": "",
+      "testScript": "",
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "body": {
+        "contentType": "application/json",
+        "body": "{\n  \"coupon_name\": \"COUPON_TEST1\", \n  \"amount\": 5\n}"
+      },
+      "requestVariables": [],
+      "responses": {
+        "Success": {
+          "name": "Success",
+          "originalRequest": {
+            "v": "6",
+            "name": "Store",
+            "method": "POST",
+            "endpoint": "<<base_url>>/coupons",
+            "headers": [],
+            "params": [],
+            "body": {
+              "contentType": "application/json",
+              "body": "{\n  \"coupon_name\": \"COUPON_TEST1\", \n  \"amount\": 5\n}"
+            },
+            "auth": {
+              "authType": "none",
+              "authActive": true
+            },
+            "requestVariables": []
+          },
+          "status": "Created",
+          "code": 201,
+          "headers": [
+            {
+              "key": "content-length",
+              "value": "148"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "date",
+              "value": "Thu, 08 Jan 2026 08:23:14 GMT"
+            }
+          ],
+          "body": "{\"data\":{\"name\":\"COUPON_TEST1\",\"amount\":5,\"remaining_amount\":5,\"claim_by\":[]},\"message\":\"Coupon COUPON_TEST1 is created successfully.\",\"status\":201}"
+        }
+      },
+      "description": null
+    },
+    {
+      "v": "17",
+      "name": "Claim",
+      "method": "POST",
+      "endpoint": "<<base_url>>/coupons/claim",
+      "params": [],
+      "headers": [],
+      "preRequestScript": "",
+      "testScript": "",
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "body": {
+        "contentType": "application/json",
+        "body": "{\n  \"coupon_name\": \"COUPON_TEST\", \n  \"user_id\": \"user_31\"\n}"
+      },
+      "requestVariables": [],
+      "responses": {
+        "Error | Already Claimed": {
+          "name": "Error | Already Claimed",
+          "originalRequest": {
+            "v": "6",
+            "name": "Claim",
+            "method": "POST",
+            "endpoint": "<<base_url>>/coupons/claim",
+            "headers": [],
+            "params": [],
+            "body": {
+              "contentType": "application/json",
+              "body": "{\n  \"coupon_name\": \"COUPON_TEST1\", \n  \"user_id\": \"user_0\"\n}"
+            },
+            "auth": {
+              "authType": "none",
+              "authActive": true
+            },
+            "requestVariables": []
+          },
+          "status": "Conflict",
+          "code": 409,
+          "headers": [
+            {
+              "key": "content-length",
+              "value": "104"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "date",
+              "value": "Thu, 08 Jan 2026 08:35:34 GMT"
+            }
+          ],
+          "body": "{\"kind\":\"conflict_error\",\"message\":\"Coupon COUPON_TEST1 is already claimed by user user_0\",\"status\":409}"
+        },
+        "Success": {
+          "name": "Success",
+          "originalRequest": {
+            "v": "6",
+            "name": "Claim",
+            "method": "POST",
+            "endpoint": "<<base_url>>/coupons/claim",
+            "headers": [],
+            "params": [],
+            "body": {
+              "contentType": "application/json",
+              "body": "{\n  \"coupon_name\": \"COUPON_TEST\", \n  \"user_id\": \"user_31\"\n}"
+            },
+            "auth": {
+              "authType": "none",
+              "authActive": true
+            },
+            "requestVariables": []
+          },
+          "status": "OK",
+          "code": 200,
+          "headers": [
+            {
+              "key": "content-length",
+              "value": "86"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "date",
+              "value": "Mon, 12 Jan 2026 06:03:07 GMT"
+            }
+          ],
+          "body": "{\"message\":\"Coupon COUPON_TEST is successfully claimed by user user_31.\",\"status\":200}"
+        }
+      },
+      "description": null
+    },
+    {
+      "v": "17",
+      "name": "Register",
+      "method": "POST",
+      "endpoint": "<<base_url>>/users/register",
+      "params": [],
+      "headers": [],
+      "preRequestScript": "",
+      "testScript": "",
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "body": {
+        "contentType": "application/json",
+        "body": ""
+      },
+      "requestVariables": [],
+      "responses": {},
+      "description": null
+    },
+    {
+      "v": "17",
+      "name": "Healthcheck",
+      "method": "GET",
+      "endpoint": "<<base_url>>/healthcheck",
+      "params": [],
+      "headers": [],
+      "preRequestScript": "",
+      "testScript": "",
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "requestVariables": [],
+      "responses": {},
+      "description": null
+    }
+  ],
+  "auth": {
+    "authActive": true,
+    "authType": "none"
+  },
+  "headers": [],
+  "variables": [
+    {
+      "secret": false,
+      "key": "base_url",
+      "currentValue": "",
+      "initialValue": "http://localhost:9000/api"
+    }
+  ],
+  "description": ""
+}
