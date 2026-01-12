@@ -30,13 +30,14 @@ The result of the benchmark is 5 success and 95 failed requests with average res
 
 ### Alternative
 Message Queue
-Pros :
+</br>**Pros** 
 - The API returns an immediate response and the heavy process operates in the background. 
   The message broker ensures requests are processed sequentially by consumers, protecting the database from traffic spikes.
 -  Built-in retry mechanisms ensure transient failures are handled automatically. 
    In case failure still persists after retrials, failed messages are safely routed to a Dead Letter Queue (DLQ), 
    ensuring zero data loss and allowing for manual inspection/reprocessing.
-Cons : 
+
+**Cons :** 
 - Requires maintaining additional infrastructure, such as producer/consumer application and broker setup.  
   It needs to handle idempotency issue to ensuring a message only processes once.
 - Informing succes outcome to the users would be more difficult, either through notification, Webscoket, or another service
