@@ -10,7 +10,9 @@ a limited quota**.
 1. Backend: Go v1.24.10
 2. Database : Postgres 14.7
 3. Redis : latest
-4. Docker (optional)
+
+### Prerequisites 
+1. Docker 
 
 #### Library
 - `gorilla/mux`: The HTTP router for web servers
@@ -32,14 +34,14 @@ a limited quota**.
 Before running the application, you need to setup the necessary prerequisites, as following :
 1. Clone the repository
    ```bash
-   git clone git@github.com:cchristian77/payroll_be.git
+   git clone git@github.com:cchristian77/coupon-be.git
    ```
 
 2. Configure environment variable </br>
    Use **'localhost'** instead on **database.host** and **redis.host**, if backend is not run on Docker. </br>
-   The port of application is set to **9000** as default.
+   The port of application is set to **9000** as default (or setup based on your preferred configuration).
      ```bash
-    copy env.json.example // setup based on your preferred configuration
+    copy env.json.example 
     ```
 
 2. Initialize services (database, redis, backend app)
@@ -70,13 +72,7 @@ Before running the application, you need to setup the necessary prerequisites, a
 
 7. Run application
     ```
-    go run ./cmd/web
-    ```
-
-8. Run Unit Test
-   ```
-    go generate ./...
-    go test ./...
+    docker compose up -d
     ```
 
 ### How to Test
