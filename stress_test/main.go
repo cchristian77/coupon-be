@@ -23,7 +23,7 @@ func main() {
 		failureCount    int64
 		totalDurationNs int64
 		url             = "http://localhost:9000"
-		totalRequests   = 50
+		totalRequests   = 100
 	)
 
 	client := &http.Client{Timeout: 5 * time.Second}
@@ -67,6 +67,8 @@ func main() {
 				return
 			}
 
+			duration := time.Since(startTime)
+
 			respBodyBytes, err := io.ReadAll(resp.Body)
 			if err != nil {
 				fmt.Printf("[USER=%s] Failed to read response body: %v\n", userID, err)
@@ -81,14 +83,14 @@ func main() {
 				fmt.Printf("[USER=%s] FAILED | Status %d | Response : %s \n", userID, resp.StatusCode, string(respBodyBytes))
 			} else if resp.StatusCode >= 200 {
 				atomic.AddInt64(&successCount, 1)
-				fmt.Printf("[USER=%s] SUCCESS | Status :  %d\n", userID, resp.StatusCode)
+				fmt.Printf("[USER=%s] SUCCESS | Status  %d\n", userID, resp.StatusCode)
 			}
 
-			duration := time.Since(startTime)
 			fmt.Printf("[USER=%s] Request duration : %s\n", userID, duration.String())
 			atomic.AddInt64(&totalDurationNs, duration.Nanoseconds())
 		}()
 
+		time.Sleep(10 * time.Nanosecond)
 	}
 
 	wg.Wait()

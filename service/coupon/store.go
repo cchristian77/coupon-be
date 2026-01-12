@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-func (b base) Store(ctx context.Context, input *request.UpsertCoupon) (*response.Coupon, error) {
+func (b *base) Store(ctx context.Context, input *request.UpsertCoupon) (*response.Coupon, error) {
 	logger.Info(ctx, "Store Post with request: %v", input)
 
 	input.Name = toCouponName(input.Name)

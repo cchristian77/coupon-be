@@ -7,7 +7,7 @@ import (
 	"coupon_be/util/logger"
 )
 
-func (b base) Detail(ctx context.Context, name string) (*response.Coupon, error) {
+func (b *base) Detail(ctx context.Context, name string) (*response.Coupon, error) {
 	logger.Info(ctx, "Get Detail Coupon with name: %s", name)
 
 	coupon, err := b.repository.FindCouponByName(ctx, util.SanitizeString(name), true)

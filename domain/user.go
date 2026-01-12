@@ -5,8 +5,10 @@ import "gorm.io/gorm"
 type User struct {
 	BaseModel
 
-	DeletedAt gorm.DeletedAt
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 	Username  string
 	FullName  string
 	Password  string
+
+	ClaimedCoupons []*Coupon `gorm:"many2many:user_claims;"`
 }

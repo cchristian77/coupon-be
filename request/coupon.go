@@ -1,7 +1,9 @@
 package request
 
 type FilterCoupon struct {
-	Search string `json:"search"`
+	Page    int    `json:"page"`
+	PerPage int    `json:"per_page"`
+	Search  string `json:"search"`
 }
 
 type UpsertCoupon struct {
@@ -12,6 +14,6 @@ type UpsertCoupon struct {
 }
 
 type ClaimCoupon struct {
-	UserName   string `json:"user_id" validate:"required"`
+	Username   string `json:"user_id" validate:"required"`
 	CouponName string `json:"coupon_name" validate:"required"`
 }

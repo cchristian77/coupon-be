@@ -5,6 +5,7 @@ import (
 	"coupon_be/domain"
 	sharedErrs "coupon_be/shared/errors"
 	"coupon_be/shared/external/database"
+	"coupon_be/util"
 	"coupon_be/util/logger"
 
 	"gorm.io/gorm"
@@ -33,7 +34,7 @@ func (r *repo) FindCouponByName(ctx context.Context, name string, withClaimBy bo
 
 	db, _ := database.ConnFromCtx(ctx, r.DB)
 
-	query := db.WithContext(ctx)
+	query := db.Debug().WithContext(ctx)
 	if withClaimBy {
 		query.Preload("ClaimBy")
 	}
@@ -50,8 +51,11 @@ func (r *repo) FindCouponByName(ctx context.Context, name string, withClaimBy bo
 	return result, nil
 }
 
-func (r *repo) FindCoupons(ctx context.Context, search string) ([]*domain.Coupon, error) {
-	var result []*domain.Coupon
+func (r *repo) FindCouponsPaginated(ctx context.Context, search string, p *util.Pagination) ([]*domain.Coupon, error) {
+	var (
+		result []*domain.Coupon
+		count  int64
+	)
 
 	db, _ := database.ConnFromCtx(ctx, r.DB)
 
@@ -61,8 +65,18 @@ func (r *repo) FindCoupons(ctx context.Context, search string) ([]*domain.Coupon
 		query.Where("name ILIKE ?", "%"+search+"%")
 	}
 
-	if err := query.Find(&result).Error; err != nil {
-		logger.Error(ctx, "[REPOSITORY] Failed on find coupons : %v", err)
+	if err := query.Count(&count).Error; err != nil {
+		logger.Error(ctx, "[REPOSITORY] Failed on find coupons paginated count: %v", err)
+		return nil, sharedErrs.NewRepositoryErr(err, "%s", err.Error())
+	}
+
+	p.SetTotal(count)
+
+	err := query.Offset(p.Offset()).
+		Limit(p.Limit()).
+		Find(&result).Error
+	if err != nil {
+		logger.Error(ctx, "[REPOSITORY] Failed on find coupons paginated: %v", err)
 
 		return nil, sharedErrs.NewRepositoryErr(err, "%s", err.Error())
 	}
@@ -102,7 +116,7 @@ func (r *repo) UpdateCoupon(ctx context.Context, data *domain.Coupon) (*domain.C
 	return data, nil
 }
 
-func (r *repo) DecrementCouponRemainingAmount(ctx context.Context, id uint64) (*domain.Coupon, error) {
+func (r *repo) DecrementCouponRemainingAmount(ctx context.Context, id uint64) error {
 	var result *domain.Coupon
 
 	db, _ := database.ConnFromCtx(ctx, r.DB)
@@ -113,10 +127,10 @@ func (r *repo) DecrementCouponRemainingAmount(ctx context.Context, id uint64) (*
 		UpdateColumn("remaining_amount", gorm.Expr("remaining_amount - 1")).
 		Error
 	if err != nil {
-		logger.Error(ctx, "[REPOSITORY] Failed on update coupon: %v", err)
+		logger.Error(ctx, "[REPOSITORY] Failed on decrement coupon remaining amount: %v", err)
 
-		return nil, sharedErrs.NewRepositoryErr(err, "%s", err.Error())
+		return sharedErrs.NewRepositoryErr(err, "%s", err.Error())
 	}
 
-	return result, nil
+	return nil
 }

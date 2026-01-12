@@ -1,18 +1,21 @@
 version: "3.8"
 
 services:
-#  payroll_api:
-#    build:
-#      context: "./"
-#      dockerfile: Dockerfile
-#    restart: always
-#    ports:
-#      - "9000:80"
-#    deploy:
-#      mode: replicated
-#      replicas: 1
-#    environment:
-#      DSN: "host=postgres_db port=5432 user=admin password=password dbname=payroll sslmode=disable timezone=UTC"
+  coupon_be:
+    build:
+      context: "./"
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./env.json:/usr/src/app/env.json:ro
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      - postgres_db
+      - redis
 
   postgres_db:
     image: 'postgres:14.7'

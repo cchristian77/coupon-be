@@ -15,8 +15,6 @@ This file provides functionality to create instances of the specified required s
 This ensures that tests have consistent and predictable data without the need for creating these objects manually in each test case.
 */
 
-const DefaultJWTSecretForTest = "secret"
-
 /*
  * ============================= MOCKING =============================
  */
@@ -58,6 +56,31 @@ func InitUserDomain() *domain.User {
 	}
 }
 
-/*
- * ============================= Response =============================
- */
+func InitCouponDomain() *domain.Coupon {
+	now := time.Now()
+
+	return &domain.Coupon{
+		BaseModel: domain.BaseModel{
+			ID:        1,
+			CreatedAt: now,
+			UpdatedAt: now,
+		},
+		Name:            "COUPON_TEST",
+		Amount:          50,
+		RemainingAmount: 50,
+	}
+}
+
+func InitUserClaimDomain() *domain.UserClaim {
+	now := time.Now()
+
+	return &domain.UserClaim{
+		BaseModel: domain.BaseModel{
+			ID:        1,
+			CreatedAt: now,
+			UpdatedAt: now,
+		},
+		UserID:   1,
+		CouponID: 1,
+	}
+}

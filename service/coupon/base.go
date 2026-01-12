@@ -10,7 +10,7 @@ import (
 )
 
 type Service interface {
-	Filter(ctx context.Context, input *request.FilterCoupon) ([]*response.CouponList, error)
+	Filter(ctx context.Context, input *request.FilterCoupon) (*response.BasePagination[[]*response.CouponList], error)
 
 	Detail(ctx context.Context, name string) (*response.Coupon, error)
 

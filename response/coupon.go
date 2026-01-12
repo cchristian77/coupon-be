@@ -32,14 +32,13 @@ func NewCouponFromDomain(c *domain.Coupon) *Coupon {
 	}
 }
 
-func NewCouponListFromDomains(c []*domain.Coupon) []*CouponList {
-	result := make([]*CouponList, len(c))
-	for i, coupon := range c {
-		result[i] = &CouponList{
-			Name:   coupon.Name,
-			Amount: coupon.Amount,
-		}
+func NewCouponListFromDomain(c *domain.Coupon) *CouponList {
+	if c == nil {
+		return nil
 	}
 
-	return result
+	return &CouponList{
+		Name:   c.Name,
+		Amount: c.Amount,
+	}
 }

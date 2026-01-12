@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -30,7 +31,30 @@ func (c *Controller) RegisterRoutes(r *mux.Router) {
 func (c *Controller) Index(r *http.Request) (*fhttp.Response, error) {
 	ctx := r.Context()
 
-	var input request.FilterCoupon
+	var (
+		input request.FilterCoupon
+		err   error
+	)
+
+	if data := r.URL.Query().Get("page"); data != "" {
+		input.Page, err = strconv.Atoi(data)
+		if err != nil || input.Page <= 0 {
+			return nil, fhttp.NewErrorResponse(
+				http.StatusBadRequest,
+				sharedErrs.ErrKindValidation.String(),
+				"Please provide a valid page as integer")
+		}
+	}
+
+	if data := r.URL.Query().Get("per_page"); data != "" {
+		input.PerPage, err = strconv.Atoi(data)
+		if err != nil || input.Page <= 0 {
+			return nil, fhttp.NewErrorResponse(
+				http.StatusBadRequest,
+				sharedErrs.ErrKindValidation.String(),
+				"Please provide a valid page as integer")
+		}
+	}
 
 	input.Search = r.URL.Query().Get("search")
 
@@ -116,6 +140,6 @@ func (c *Controller) Claim(r *http.Request) (*fhttp.Response, error) {
 
 	return &fhttp.Response{
 		Status:  http.StatusOK,
-		Message: fmt.Sprintf("Coupon %s is successfully claimed by user %s.", input.CouponName, input.UserName),
+		Message: fmt.Sprintf("Coupon %s is successfully claimed by user %s.", input.CouponName, input.Username),
 	}, nil
 }

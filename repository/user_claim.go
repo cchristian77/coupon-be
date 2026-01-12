@@ -31,7 +31,7 @@ func (r *repo) FindUserClaimByUserIDAndCouponID(ctx context.Context, userID, cou
 func (r *repo) CreateUserClaim(ctx context.Context, data *domain.UserClaim) (*domain.UserClaim, error) {
 	db, _ := database.ConnFromCtx(ctx, r.DB)
 
-	err := db.Debug().WithContext(ctx).
+	err := db.WithContext(ctx).
 		Clauses(clause.Returning{}).
 		Create(&data).
 		Error
@@ -42,4 +42,23 @@ func (r *repo) CreateUserClaim(ctx context.Context, data *domain.UserClaim) (*do
 	}
 
 	return data, nil
+}
+
+func (r *repo) FindUserClaimCountByCouponID(ctx context.Context, couponID uint64) (int64, error) {
+	db, _ := database.ConnFromCtx(ctx, r.DB)
+
+	var count int64
+
+	err := db.WithContext(ctx).
+		Model(&domain.UserClaim{}).
+		Where("coupon_id = ?", couponID).
+		Count(&count).
+		Error
+	if err != nil {
+		logger.Error(ctx, "[REPOSITORY] Failed on create user claim: %v", err)
+
+		return 0, sharedErrs.NewRepositoryErr(err, "%s", err.Error())
+	}
+
+	return count, nil
 }

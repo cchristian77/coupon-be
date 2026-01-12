@@ -10,7 +10,7 @@ import (
 
 const (
 	redisLockExpiry       = 20  // in seconds
-	redisLockRetryDelay   = 300 // in miliseconds
+	redisLockRetryDelay   = 500 // in miliseconds
 	redisLockMaxNoOfRetry = 3
 )
 

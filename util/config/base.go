@@ -65,10 +65,6 @@ func LoadConfig() error {
 }
 
 func Env() *Config {
-	if c == nil {
-		LoadConfig()
-	}
-
 	return c
 }
 

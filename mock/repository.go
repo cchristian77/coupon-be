@@ -12,6 +12,7 @@ package mock
 import (
 	context "context"
 	domain "coupon_be/domain"
+	util "coupon_be/util"
 	reflect "reflect"
 
 	gomock "go.uber.org/mock/gomock"
@@ -87,18 +88,32 @@ func (mr *MockRepositoryMockRecorder) CreateUserClaim(ctx, data any) *gomock.Cal
 }
 
 // DecrementCouponRemainingAmount mocks base method.
-func (m *MockRepository) DecrementCouponRemainingAmount(ctx context.Context, id uint64) (*domain.Coupon, error) {
+func (m *MockRepository) DecrementCouponRemainingAmount(ctx context.Context, id uint64) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DecrementCouponRemainingAmount", ctx, id)
-	ret0, _ := ret[0].(*domain.Coupon)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // DecrementCouponRemainingAmount indicates an expected call of DecrementCouponRemainingAmount.
 func (mr *MockRepositoryMockRecorder) DecrementCouponRemainingAmount(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecrementCouponRemainingAmount", reflect.TypeOf((*MockRepository)(nil).DecrementCouponRemainingAmount), ctx, id)
+}
+
+// FindCountUserClaimByCouponID mocks base method.
+func (m *MockRepository) FindUserClaimCountByCouponID(ctx context.Context, couponID uint64) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindUserClaimCountByCouponID", ctx, couponID)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindCountUserClaimByCouponID indicates an expected call of FindCountUserClaimByCouponID.
+func (mr *MockRepositoryMockRecorder) FindCountUserClaimByCouponID(ctx, couponID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserClaimCountByCouponID", reflect.TypeOf((*MockRepository)(nil).FindUserClaimCountByCouponID), ctx, couponID)
 }
 
 // FindCouponByID mocks base method.
@@ -131,19 +146,19 @@ func (mr *MockRepositoryMockRecorder) FindCouponByName(ctx, name, withClaimBy an
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindCouponByName", reflect.TypeOf((*MockRepository)(nil).FindCouponByName), ctx, name, withClaimBy)
 }
 
-// FindCoupons mocks base method.
-func (m *MockRepository) FindCoupons(ctx context.Context, search string) ([]*domain.Coupon, error) {
+// FindCouponsPaginated mocks base method.
+func (m *MockRepository) FindCouponsPaginated(ctx context.Context, search string, p *util.Pagination) ([]*domain.Coupon, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindCoupons", ctx, search)
+	ret := m.ctrl.Call(m, "FindCouponsPaginated", ctx, search, p)
 	ret0, _ := ret[0].([]*domain.Coupon)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// FindCoupons indicates an expected call of FindCoupons.
-func (mr *MockRepositoryMockRecorder) FindCoupons(ctx, search any) *gomock.Call {
+// FindCouponsPaginated indicates an expected call of FindCouponsPaginated.
+func (mr *MockRepositoryMockRecorder) FindCouponsPaginated(ctx, search, p any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindCoupons", reflect.TypeOf((*MockRepository)(nil).FindCoupons), ctx, search)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindCouponsPaginated", reflect.TypeOf((*MockRepository)(nil).FindCouponsPaginated), ctx, search, p)
 }
 
 // FindUserByID mocks base method.

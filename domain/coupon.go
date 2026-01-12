@@ -7,7 +7,7 @@ import (
 type Coupon struct {
 	BaseModel
 
-	gorm.DeletedAt
+	DeletedAt       gorm.DeletedAt `gorm:"index"`
 	Name            string
 	Amount          uint64
 	RemainingAmount uint64
@@ -21,9 +21,5 @@ func (c *Coupon) IsUsable() bool {
 		return false
 	}
 
-	if c.RemainingAmount <= 0 {
-		return false
-	}
-
-	return true
+	return c.RemainingAmount > 0
 }
