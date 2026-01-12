@@ -2,9 +2,9 @@
 
 Coupon API is a robust backend service designed to facilitate coupon management and claim process.
 This system provides RESTful API endpoints which enables efficient functionalities,
-utilizing Go and PostgreSQL for reliable data storage. 
+utilizing Go and PostgreSQL for reliable data storage.
 The study case is to **solve race condition when concurrent users try to claim a single coupon with
- a limited quota**. P{lease check the documentation directory for the detailed solution. 
+a limited quota**.
 
 ### Technology
 1. Backend: Go v1.24.10
@@ -34,7 +34,7 @@ Before running the application, you need to setup the necessary prerequisites, a
    ```bash
    git clone git@github.com:cchristian77/payroll_be.git
    ```
-   
+
 2. Configure environment variable </br>
    Use **'localhost'** instead on **database.host** and **redis.host**, if backend is not run on Docker. </br>
    The port of application is set to **9000** as default.
@@ -73,7 +73,7 @@ Before running the application, you need to setup the necessary prerequisites, a
     go run ./cmd/web
     ```
 
-8. Run Unit Test 
+8. Run Unit Test
    ```
     go generate ./...
     go test ./...
@@ -87,11 +87,11 @@ Before running the application, you need to setup the necessary prerequisites, a
     ```
 
 2. Populate user database
-   Populate user data 
+   Populate user data
    ```bash
     curl http://localhost:9000/api/users/register
     ```
-   Populate coupon data 
+   Populate coupon data
    ```bash
    curl --request POST \
       --url http://localhost:9000/api/coupons \
@@ -101,11 +101,32 @@ Before running the application, you need to setup the necessary prerequisites, a
         "amount": 10
       }'
    ```
-   
+
 3. Run stress test
    ```
    go run ./stress_test/
     ```
+
+### Architecture Notes
+![Database Schema.png](documentation/Database%20Schema.png)
+
+- `users` table contains field for a single user such as username, password, etc.
+- `coupons` table contains `name`, `amount`, and `remaining_amount` for a single coupon.
+- `user_claims` table is a pivot table between coupons and users table. Since multiple users can claim multiple coupons, with unique constraint for
+  `user_id` and `coupon_id` pairs.
+
+#### Locking Strategy
+In a concurrent environment, multiple users may attempt to claim the same coupon simultaneously,
+which is introduced a race condition issue. </br>
+
+To prevent this, I serialize access to the claim process using a distributed lock using Redis.
+When a user attempts to claim a coupon, the system tries to set a unique key `claim:coupon:{coupon_name}` in Redis;
+if this key is successfully set, the process "wins" the lock and proceeds the claim process by inserting an entry in
+user_claims table and decrement the `coupon.remaining_amount `by 1. Concurrent requests will detect that the key already
+exists, forcing them to pause for `500ms` and retry up to `3` times. </br>
+
+This approach eliminates the race conditions in the coupon claim process by enforcing that only 1 claim is processed,
+while maintaining the high performance of the API. Please check the documentation directory for the detailed solution. </br>
 
 ### Author
 Chris Christian 

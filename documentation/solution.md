@@ -1,16 +1,17 @@
 # Solution 
 
-### Overview
-In a concurrent environment, multiple users may attempt to claim the same coupon simultaneously. 
-If the service reads the remaining quota, checks if it is greater than zero, and then decrements it, 
-a race condition can occur between the "read" and "write" operations.
+#### Locking Strategy
+In a concurrent environment, multiple users may attempt to claim the same coupon simultaneously,
+which is introduced a race condition issue. </br>
 
-To prevent this, I serialize access to the claim process using a distributed lock using Redis. 
-When a user attempts to claim a coupon, the system tries to set a unique key (claim:coupon:{name}) in Redis; 
-if this key is successfully set, the process "wins" the lock and proceeds the claim process by inserting an entry in 
-user_claims table and decrement the coupon.remaining_amount by 1. Concurrent requests will detect that the key already 
-exists, forcing them to pause for 500ms and retry up to 3 times. This approach eliminates the race conditions in the 
-coupon claim process by enforcing that only 1 claim is processed, while maintaining the high performance of the API. 
+To prevent this, I serialize access to the claim process using a distributed lock using Redis.
+When a user attempts to claim a coupon, the system tries to set a unique key `claim:coupon:{coupon_name}` in Redis;
+if this key is successfully set, the process "wins" the lock and proceeds the claim process by inserting an entry in
+user_claims table and decrement the `coupon.remaining_amount `by 1. Concurrent requests will detect that the key already
+exists, forcing them to pause for `500ms` and retry up to `3` times. </br>
+
+This approach eliminates the race conditions in the coupon claim process by enforcing that only 1 claim is processed,
+while maintaining the high performance of the API. Please check the documentation directory for the detailed solution. </br>
 
 ### Consideration 
 - Suitable for very high throughput with in-memory access using Redis, preventing database bottlenecks or deadlocks.
@@ -41,7 +42,7 @@ Cons :
 - Informing succes outcome to the users would be more difficult, either through notification, Webscoket, or another service
 
 ### Further Development 
-1. Create reclaim functionality to cancel claimed coupon in case of failed or cancelled transaction in real-world scenario.
+1. Create reclaim functionality to cancel the claimed coupons in case of failed or cancelled transaction in the real-world scenario.
 2. Create eligible functionality to determine whether a user is able to use the coupon before claiming it. 
 
 ### Author
