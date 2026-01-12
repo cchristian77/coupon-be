@@ -49,28 +49,13 @@ Before running the application, you need to setup the necessary prerequisites, a
     docker compose up -d
     ```
 
-3. Install dependencies
-    ```bash
-    go mod download
-    ```
-
-4. Run database migrations
-    ```bash
-     goose postgres "user=admin password=password dbname=coupon_db sslmode=disable" up
-    ```
-
-5. Configure environment variable
-    ```bash
-    copy .env.json.example and setup based on your preferred configuration
-    ```
-
-6. Migrate the database
+3. Run database migrations
    (Alternatively, you can use coupon_db.sql in the documentation directory.)
    ```bash
    goose -dir ./migrations  postgres "user=admin password=password dbname=coupon_db sslmode=disable" up
    ```
 
-7. Run application
+4. Run application
     ```
     docker compose up -d
     ```
