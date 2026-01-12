@@ -1,9 +1,8 @@
-package comment
+package coupon
 
 import (
 	"context"
 	m "coupon_be/mock"
-	"coupon_be/util/constant"
 	"coupon_be/util/logger"
 	"testing"
 
@@ -24,26 +23,26 @@ func TestNewService_Success(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	attendanceService, err := NewService(repoMock, writeDB)
+	couponService, err := NewService(repoMock, writeDB)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	assert.NotNil(t, attendanceService)
-	assert.Implements(t, (*Service)(nil), attendanceService)
+	assert.NotNil(t, couponService)
+	assert.Implements(t, (*Service)(nil), couponService)
 }
 
-type CommentServiceTestSuite struct {
+type CouponServiceTestSuite struct {
 	suite.Suite
 	repo    *m.MockRepository
 	writeDB *gorm.DB
 	sqlMock sqlmock.Sqlmock
 	ctx     context.Context
 
-	commentService Service
+	couponService Service
 }
 
-func (suite *CommentServiceTestSuite) Before(t *testing.T) {
+func (suite *CouponServiceTestSuite) Before(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
@@ -52,21 +51,20 @@ func (suite *CommentServiceTestSuite) Before(t *testing.T) {
 	logger.Initialise()
 
 	suite.ctx = context.Background()
-	suite.ctx = context.WithValue(suite.ctx, constant.XAuthUserKey, m.InitUserDomain())
 	suite.repo = m.NewMockRepository(ctrl)
 	suite.writeDB, suite.sqlMock, err = m.NewMockDB()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	suite.commentService, err = NewService(suite.repo, suite.writeDB)
+	suite.couponService, err = NewService(suite.repo, suite.writeDB)
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
-func (suite *CommentServiceTestSuite) After(t *testing.T) {}
+func (suite *CouponServiceTestSuite) After(t *testing.T) {}
 
-func TestSuiteRunCommentService(t *testing.T) {
-	suite.Run(t, new(CommentServiceTestSuite))
+func TestSuiteRunCouponService(t *testing.T) {
+	suite.Run(t, new(CouponServiceTestSuite))
 }

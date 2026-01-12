@@ -1,9 +1,10 @@
-package comment
+package coupon
 
 import (
 	"coupon_be/request"
-	"coupon_be/service/comment"
+	"coupon_be/service/coupon"
 	sharedErrs "coupon_be/shared/errors"
+	"coupon_be/shared/external/redis"
 	"coupon_be/shared/fhttp"
 	"coupon_be/util"
 	"encoding/json"
@@ -16,32 +17,24 @@ import (
 
 // Controller manages the authentication operations, such as login, logout, etc.
 type Controller struct {
-	comment comment.Service
+	coupon    coupon.Service
+	redisLock redis.ILock
 }
 
 func (c *Controller) RegisterRoutes(r *mux.Router) {
-	r.Handle("/{post_id:[0-9]+}/posts", fhttp.AppHandler(c.FilterComments)).Methods(http.MethodGet)
-	r.Handle("/{comment_id:[0-9]+}", fhttp.AppHandler(c.Detail)).Methods(http.MethodGet)
+	r.Handle("", fhttp.AppHandler(c.Index)).Methods(http.MethodGet)
+	r.Handle("/{coupon_name}", fhttp.AppHandler(c.Detail)).Methods(http.MethodGet)
 	r.Handle("", fhttp.AppHandler(c.Store)).Methods(http.MethodPost)
-	r.Handle("/{comment_id:[0-9]+}", fhttp.AppHandler(c.Update)).Methods(http.MethodPut)
-	r.Handle("/{comment_id:[0-9]+}", fhttp.AppHandler(c.Delete)).Methods(http.MethodDelete)
+	r.Handle("/claim", fhttp.AppHandler(c.Claim)).Methods(http.MethodPost)
 }
 
-func (c *Controller) FilterComments(r *http.Request) (*fhttp.Response, error) {
+func (c *Controller) Index(r *http.Request) (*fhttp.Response, error) {
 	ctx := r.Context()
 
 	var (
-		input request.FilterComment
+		input request.FilterCoupon
 		err   error
 	)
-
-	input.PostID, err = strconv.ParseUint(mux.Vars(r)["post_id"], 10, 64)
-	if err != nil {
-		return nil, fhttp.NewErrorResponse(
-			http.StatusBadRequest,
-			sharedErrs.ErrKindValidation.String(),
-			"Please provide the correct post_id as integer")
-	}
 
 	if data := r.URL.Query().Get("page"); data != "" {
 		input.Page, err = strconv.Atoi(data)
@@ -63,7 +56,9 @@ func (c *Controller) FilterComments(r *http.Request) (*fhttp.Response, error) {
 		}
 	}
 
-	result, err := c.comment.FilterComments(ctx, &input)
+	input.Search = r.URL.Query().Get("search")
+
+	result, err := c.coupon.Filter(ctx, &input)
 	if err != nil {
 		return nil, err
 	}
@@ -74,15 +69,15 @@ func (c *Controller) FilterComments(r *http.Request) (*fhttp.Response, error) {
 func (c *Controller) Detail(r *http.Request) (*fhttp.Response, error) {
 	ctx := r.Context()
 
-	commentID, err := strconv.ParseUint(mux.Vars(r)["comment_id"], 10, 64)
-	if err != nil {
+	code := mux.Vars(r)["coupon_name"]
+	if code == "" {
 		return nil, fhttp.NewErrorResponse(
 			http.StatusBadRequest,
 			sharedErrs.ErrKindValidation.String(),
-			"Please provide the correct comment_id as integer")
+			"Please provide the correct coupon_name as string")
 	}
 
-	result, err := c.comment.Detail(ctx, commentID)
+	result, err := c.coupon.Detail(ctx, code)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +88,7 @@ func (c *Controller) Detail(r *http.Request) (*fhttp.Response, error) {
 func (c *Controller) Store(r *http.Request) (*fhttp.Response, error) {
 	ctx := r.Context()
 
-	var input request.CreateComment
+	var input request.UpsertCoupon
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		return nil, fhttp.NewErrorResponse(
 			http.StatusUnprocessableEntity,
@@ -105,25 +100,22 @@ func (c *Controller) Store(r *http.Request) (*fhttp.Response, error) {
 		return nil, err
 	}
 
-	result, err := c.comment.Store(ctx, &input)
+	result, err := c.coupon.Store(ctx, &input)
 	if err != nil {
 		return nil, err
 	}
 
 	return &fhttp.Response{
 		Data:    result,
-		Status:  http.StatusOK,
-		Message: fmt.Sprintf("Comment %d is created successfully.", result.ID),
+		Status:  http.StatusCreated,
+		Message: fmt.Sprintf("Coupon %s is created successfully.", result.Name),
 	}, nil
 }
 
-func (c *Controller) Update(r *http.Request) (*fhttp.Response, error) {
+func (c *Controller) Claim(r *http.Request) (*fhttp.Response, error) {
 	ctx := r.Context()
 
-	var (
-		input request.UpdateComment
-		err   error
-	)
+	var input request.ClaimCoupon
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		return nil, fhttp.NewErrorResponse(
 			http.StatusUnprocessableEntity,
@@ -131,43 +123,23 @@ func (c *Controller) Update(r *http.Request) (*fhttp.Response, error) {
 			fmt.Sprintf("Invalid request body: %v", err))
 	}
 
-	input.ID, err = strconv.ParseUint(mux.Vars(r)["comment_id"], 10, 64)
-	if err != nil {
-		return nil, fhttp.NewErrorResponse(
-			http.StatusBadRequest,
-			sharedErrs.ErrKindValidation.String(),
-			"Please provide the correct comment_id as integer")
-	}
-
-	if err = util.Validate(input); err != nil {
+	if err := util.Validate(input); err != nil {
 		return nil, err
 	}
 
-	result, err := c.comment.Update(ctx, &input)
+	couponClaimKey := "claim:coupon:%s"
+	err := c.redisLock.WithLock(ctx, fmt.Sprintf(couponClaimKey, input.CouponName), func() error {
+		if err := c.coupon.Claim(ctx, &input); err != nil {
+			return err
+		}
+		return nil
+	})
 	if err != nil {
-		return nil, err
-	}
-
-	return &fhttp.Response{Data: result, Status: http.StatusOK}, nil
-}
-
-func (c *Controller) Delete(r *http.Request) (*fhttp.Response, error) {
-	ctx := r.Context()
-
-	commentID, err := strconv.ParseUint(mux.Vars(r)["comment_id"], 10, 64)
-	if err != nil {
-		return nil, fhttp.NewErrorResponse(
-			http.StatusBadRequest,
-			sharedErrs.ErrKindValidation.String(),
-			"Please provide the correct comment_id as integer")
-	}
-
-	if err = c.comment.Delete(ctx, commentID); err != nil {
 		return nil, err
 	}
 
 	return &fhttp.Response{
-		Data:   "Comment is deleted successfully.",
-		Status: http.StatusOK,
+		Status:  http.StatusOK,
+		Message: fmt.Sprintf("Coupon %s is successfully claimed by user %s.", input.CouponName, input.Username),
 	}, nil
 }

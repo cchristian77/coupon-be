@@ -1,4 +1,4 @@
-package comment
+package coupon
 
 import (
 	m "coupon_be/mock"
@@ -12,16 +12,15 @@ import (
 	"go.uber.org/mock/gomock"
 )
 
-func (suite *CommentServiceTestSuite) Test_Store() {
-	post := m.InitPostDomain()
-	comment := m.InitCommentDomain()
-	input := &request.CreateComment{
-		PostID:  1,
-		Comment: "test comment",
-		Rating:  util.ToPointerValue(uint8(5)),
+func (suite *CouponServiceTestSuite) Test_Store() {
+	coupon := m.InitCouponDomain()
+	input := &request.UpsertCoupon{
+		ID:     1,
+		Name:   "COUPON_TEST",
+		Amount: 50,
 	}
 
-	var expected *response.Comment
+	var expected *response.Coupon
 
 	testCases := []struct {
 		name          string
@@ -32,35 +31,36 @@ func (suite *CommentServiceTestSuite) Test_Store() {
 		{
 			name: "success",
 			prepareMock: func() {
-				expected = response.NewCommentFromDomain(comment)
+				expected = response.NewCouponFromDomain(coupon)
 
-				suite.repo.EXPECT().FindPostByID(suite.ctx, gomock.Eq(input.PostID), gomock.Eq(false)).
-					Return(post, nil).
+				suite.repo.EXPECT().FindCouponByName(suite.ctx, gomock.Eq(input.Name), gomock.Eq(false)).
+					Return(nil, nil).
 					Times(1)
-				suite.repo.EXPECT().CreateComment(suite.ctx, gomock.Any()).
-					Return(comment, nil).
+				suite.repo.EXPECT().CreateCoupon(suite.ctx, gomock.Any()).
+					Return(coupon, nil).
 					Times(1)
 			},
 		},
 		{
-			name: "post not found",
+			name: "coupon name exists",
 			prepareMock: func() {
-				suite.repo.EXPECT().FindPostByID(suite.ctx, gomock.Eq(input.PostID), gomock.Eq(false)).
-					Return(nil, sharedErrs.NotFoundErr).
+				suite.repo.EXPECT().FindCouponByName(suite.ctx, gomock.Eq(input.Name), gomock.Eq(false)).
+					Return(coupon, nil).
 					Times(1)
-				suite.repo.EXPECT().CreateComment(suite.ctx, gomock.Any()).
+				suite.repo.EXPECT().CreateCoupon(suite.ctx, gomock.Any()).
 					Times(0)
 			},
-			wantErr:       true,
-			expectedError: sharedErrs.NotFoundErr,
+			wantErr: true,
+			expectedError: sharedErrs.NewBusinessValidationErr(
+				"Create Failed. Coupon with name '%s' already exists.", input.Name),
 		},
 		{
 			name: "unexpected error",
 			prepareMock: func() {
-				suite.repo.EXPECT().FindPostByID(suite.ctx, gomock.Eq(input.PostID), gomock.Eq(false)).
-					Return(post, nil).
+				suite.repo.EXPECT().FindCouponByName(suite.ctx, gomock.Eq(input.Name), gomock.Eq(false)).
+					Return(coupon, nil).
 					Times(1)
-				suite.repo.EXPECT().CreateComment(suite.ctx, gomock.Any()).
+				suite.repo.EXPECT().CreateCoupon(suite.ctx, gomock.Any()).
 					Return(nil, sharedErrs.InternalServerErr).
 					Times(1)
 			},
@@ -77,7 +77,7 @@ func (suite *CommentServiceTestSuite) Test_Store() {
 			tc.prepareMock()
 
 			// Act
-			result, err := suite.commentService.Store(suite.ctx, input)
+			result, err := suite.couponService.Store(suite.ctx, input)
 
 			// Assert
 			assert.Equal(t, tc.wantErr, err != nil, "error expected %v, but actual: %v", tc.wantErr, err)

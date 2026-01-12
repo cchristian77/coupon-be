@@ -1,4 +1,4 @@
-package comment
+package coupon
 
 import (
 	"coupon_be/domain"
@@ -12,11 +12,11 @@ import (
 	"go.uber.org/mock/gomock"
 )
 
-func (suite *CommentServiceTestSuite) Test_Detail() {
+func (suite *CouponServiceTestSuite) Test_Detail() {
 	var (
-		comment   *domain.Comment
-		expected  *response.Comment
-		commentID uint64 = 1
+		coupon      *domain.Coupon
+		expected    *response.Coupon
+		commentName = "COUPON_TEST"
 	)
 
 	testCases := []struct {
@@ -28,18 +28,18 @@ func (suite *CommentServiceTestSuite) Test_Detail() {
 		{
 			name: "success",
 			prepareMock: func() {
-				comment = m.InitCommentDomain()
-				expected = response.NewCommentFromDomain(comment)
+				coupon = m.InitCouponDomain()
+				expected = response.NewCouponFromDomain(coupon)
 
-				suite.repo.EXPECT().FindCommentByID(suite.ctx, gomock.Eq(commentID)).
-					Return(comment, nil).
+				suite.repo.EXPECT().FindCouponByName(suite.ctx, gomock.Eq(commentName), gomock.Eq(true)).
+					Return(coupon, nil).
 					Times(1)
 			},
 		},
 		{
 			name: "data not found",
 			prepareMock: func() {
-				suite.repo.EXPECT().FindCommentByID(suite.ctx, gomock.Eq(commentID)).
+				suite.repo.EXPECT().FindCouponByName(suite.ctx, gomock.Eq(commentName), gomock.Eq(true)).
 					Return(nil, sharedErrs.NotFoundErr).
 					Times(1)
 			},
@@ -56,7 +56,7 @@ func (suite *CommentServiceTestSuite) Test_Detail() {
 			tc.prepareMock()
 
 			// Act
-			result, err := suite.commentService.Detail(suite.ctx, commentID)
+			result, err := suite.couponService.Detail(suite.ctx, commentName)
 
 			// Assert
 			assert.Equal(t, tc.wantErr, err != nil, "error expected %v, but actual: %v", tc.wantErr, err)

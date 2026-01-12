@@ -2,11 +2,12 @@ package entrypoint
 
 import (
 	"context"
-	"coupon_be/entrypoint/comment"
+	"coupon_be/entrypoint/coupon"
 	"coupon_be/entrypoint/user"
 	"coupon_be/repository"
 	"coupon_be/shared/external/database"
 	"coupon_be/shared/fhttp/middleware"
+	"coupon_be/util/config"
 	"coupon_be/util/logger"
 	"fmt"
 
@@ -41,14 +42,14 @@ func StartControllers(router *mux.Router) error {
 	if err != nil {
 		return err
 	}
-	commentController, err := comment.NewController(ctx, repo, gormDB)
+	couponController, err := coupon.NewController(ctx, repo, gormDB)
 	if err != nil {
 		return err
 	}
 
 	// register routes
-	userController.RegisterRoutes(router.PathPrefix("/users/v1").Subrouter())
-	commentController.RegisterRoutes(router.PathPrefix("/comments/v1").Subrouter())
+	userController.RegisterRoutes(router.PathPrefix("/users").Subrouter())
+	couponController.RegisterRoutes(router.PathPrefix("/coupons").Subrouter())
 
 	return nil
 }
@@ -62,6 +63,7 @@ func Initialise() *mux.Router {
 	router.Use(middleware.PanicRecovery())
 	router.Use(middleware.LogRequest)
 	router.Use(middleware.LogResponse)
+	router = router.PathPrefix(config.Env().App.APIPrefix).Subrouter()
 
 	if err := StartControllers(router); err != nil {
 		logger.L().Fatal(fmt.Sprintf("failed to start controllers: %v", err))

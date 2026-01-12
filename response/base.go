@@ -26,5 +26,4 @@ func NewBasePagination[T any](data []T, p *util.Pagination) *BasePagination[[]T]
 			Total:     p.Total(),
 		},
 	}
-
 }

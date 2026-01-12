@@ -1,12 +1,14 @@
 package domain
 
-import "time"
+import "gorm.io/gorm"
 
 type User struct {
 	BaseModel
 
-	DeletedAt *time.Time
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 	Username  string
 	FullName  string
 	Password  string
+
+	ClaimedCoupons []*Coupon `gorm:"many2many:user_claims;"`
 }

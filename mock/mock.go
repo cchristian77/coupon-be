@@ -2,8 +2,6 @@ package mock
 
 import (
 	"coupon_be/domain"
-	"coupon_be/response"
-	"coupon_be/util"
 	"fmt"
 	"time"
 
@@ -16,8 +14,6 @@ import (
 This file provides functionality to create instances of the specified required structs for unit testing purposes.
 This ensures that tests have consistent and predictable data without the need for creating these objects manually in each test case.
 */
-
-const DefaultJWTSecretForTest = "secret"
 
 /*
  * ============================= MOCKING =============================
@@ -54,41 +50,37 @@ func InitUserDomain() *domain.User {
 			CreatedAt: now,
 			UpdatedAt: now,
 		},
-		DeletedAt: nil,
-		Username:  "username",
-		FullName:  "full_name",
-		Password:  "password",
+		Username: "username",
+		FullName: "full_name",
+		Password: "password",
 	}
 }
 
-func InitCommentDomain() *domain.Comment {
+func InitCouponDomain() *domain.Coupon {
 	now := time.Now()
 
-	return &domain.Comment{
+	return &domain.Coupon{
 		BaseModel: domain.BaseModel{
 			ID:        1,
 			CreatedAt: now,
 			UpdatedAt: now,
 		},
-		UserID:  1,
-		PostID:  1,
-		Comment: "comment test",
-		Rating:  util.ToPointerValue(uint8(5)),
+		Name:            "COUPON_TEST",
+		Amount:          50,
+		RemainingAmount: 50,
 	}
 }
 
-/*
- * ============================= Response =============================
- */
-
-func InitCommentResponse() *response.Comment {
+func InitUserClaimDomain() *domain.UserClaim {
 	now := time.Now()
 
-	return &response.Comment{
-		ID:        1,
-		CreatedAt: now,
-		UpdatedAt: now,
-		Username:  "username",
-		Comment:   "comment test",
+	return &domain.UserClaim{
+		BaseModel: domain.BaseModel{
+			ID:        1,
+			CreatedAt: now,
+			UpdatedAt: now,
+		},
+		UserID:   1,
+		CouponID: 1,
 	}
 }

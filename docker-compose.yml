@@ -1,18 +1,21 @@
 version: "3.8"
 
 services:
-#  payroll_api:
-#    build:
-#      context: "./"
-#      dockerfile: Dockerfile
-#    restart: always
-#    ports:
-#      - "9000:80"
-#    deploy:
-#      mode: replicated
-#      replicas: 1
-#    environment:
-#      DSN: "host=postgres_db port=5432 user=admin password=password dbname=payroll sslmode=disable timezone=UTC"
+  coupon_be:
+    build:
+      context: "./"
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./env.json:/usr/src/app/env.json:ro
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      - postgres_db
+      - redis
 
   postgres_db:
     image: 'postgres:14.7'
@@ -25,12 +28,23 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: base
+      POSTGRES_DB: coupon_db
     volumes:
       - type: volume
-        source: base_vol
+        source: coupon-vol
         target: "/var/lib/postgresql/data"
         read_only: false
+
+  # Redis Configuration
+  redis:
+    image: redis:latest
+    container_name: redis
+    command: redis-server --requirepass password
+    restart: always
+    volumes:
+      - redis-vol:/data
+    ports:
+      - "6379:6379"
 
 #  pgadmin:
 #    image: 'dpage/pgadmin4:latest'
@@ -41,5 +55,8 @@ services:
 #      - "5050:80"
 
 volumes:
-  base_vol:
-    name: base
+  coupon-vol:
+    name: coupon
+
+  redis-vol:
+    name: redis
