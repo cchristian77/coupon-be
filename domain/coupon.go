@@ -13,7 +13,7 @@ type Coupon struct {
 	RemainingAmount uint64
 
 	// Association
-	ClaimBy []*User `gorm:"many2many:user_claims;foreignKey:ID;joinForeignKey:CouponID;References:ID;joinReferences:UserID"`
+	ClaimedBy []*User `gorm:"many2many:user_claims;"`
 }
 
 func (c *Coupon) IsUsable() bool {

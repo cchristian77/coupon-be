@@ -6,7 +6,7 @@ type Coupon struct {
 	Name            string   `json:"name"`
 	Amount          uint64   `json:"amount"`
 	RemainingAmount uint64   `json:"remaining_amount"`
-	ClaimBy         []string `json:"claim_by"`
+	ClaimedBy       []string `json:"claimed_by"`
 }
 
 type CouponList struct {
@@ -19,16 +19,16 @@ func NewCouponFromDomain(c *domain.Coupon) *Coupon {
 		return nil
 	}
 
-	claimBy := make([]string, len(c.ClaimBy))
-	for i, claim := range c.ClaimBy {
-		claimBy[i] = claim.Username
+	claimedBy := make([]string, len(c.ClaimedBy))
+	for i, claim := range c.ClaimedBy {
+		claimedBy[i] = claim.Username
 	}
 
 	return &Coupon{
 		Name:            c.Name,
 		Amount:          c.Amount,
 		RemainingAmount: c.RemainingAmount,
-		ClaimBy:         claimBy,
+		ClaimedBy:       claimedBy,
 	}
 }
 

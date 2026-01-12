@@ -67,14 +67,14 @@ func main() {
 				return
 			}
 
-			duration := time.Since(startTime)
-
 			respBodyBytes, err := io.ReadAll(resp.Body)
 			if err != nil {
 				fmt.Printf("[USER=%s] Failed to read response body: %v\n", userID, err)
 				atomic.AddInt64(&failureCount, 1)
 				return
 			}
+
+			duration := time.Since(startTime)
 
 			defer resp.Body.Close()
 
@@ -89,8 +89,6 @@ func main() {
 			fmt.Printf("[USER=%s] Request duration : %s\n", userID, duration.String())
 			atomic.AddInt64(&totalDurationNs, duration.Nanoseconds())
 		}()
-
-		time.Sleep(10 * time.Nanosecond)
 	}
 
 	wg.Wait()
