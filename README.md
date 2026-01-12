@@ -55,11 +55,6 @@ Before running the application, you need to setup the necessary prerequisites, a
    goose -dir ./migrations  postgres "user=admin password=password dbname=coupon_db sslmode=disable" up
    ```
 
-4. Run application
-    ```
-    docker compose up -d
-    ```
-
 ### How to Test
 
 1. Check healthcheck endpoint
